@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Gleb Yakovlev](https://up.htmlacademy.ru/javascript/10/user/251249).
-* Наставник: `Неизвестно`.
+* Наставник: [Борис Ванюшин](https://htmlacademy.ru/profile/id62080).
 
 ---
 
