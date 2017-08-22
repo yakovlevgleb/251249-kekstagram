@@ -41,5 +41,32 @@ var putObjectToArray = function () {
   }
 };
 
+var createDomElement = function (picture) {
+  var pictureElement = pictureTemplate.cloneNode(true);
+  pictureElement.querySelector('img').setAttribute('src', picture.url);
+  pictureElement.querySelector('span.picture-likes').textContent = picture.likes;
+  pictureElement.querySelector('span.picture-comments').textContent = picture.comments;
+  return pictureElement;
+};
+
+var renderDomElements = function () {
+  var fragment = document.createDocumentFragment();
+  for (var i = 0; i < picDescArr.length; i++) {
+    fragment.appendChild(createDomElement(picDescArr[i]));
+  }
+  document.querySelector('.pictures').appendChild(fragment);
+};
+
+var fillAndShowGalleryOverlay = function () {
+  var galleryOverlay = document.querySelector(selectors.galleryOverlay);
+  var k = getRandomInt(0, PHOTOCOUNT);
+  galleryOverlay.querySelector(selectors.gallery).setAttribute('src', picDescArr[k].url);
+  galleryOverlay.querySelector(selectors.likes).textContent = picDescArr[k].likes;
+  galleryOverlay.querySelector(selectors.comments).textContent = picDescArr[k].comments;
+  galleryOverlay.classList.remove('hidden');
+};
 
 putObjectToArray();
+renderDomElements();
+document.querySelector(selectors.upload).classList.add('hidden');
+fillAndShowGalleryOverlay();
