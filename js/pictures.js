@@ -22,26 +22,29 @@ var selectors = {
 
 var pictureTemplate = document.querySelector('#picture-template').content;
 
-function getRandomInt(min, max) {
+var getRandomFromInterval = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-var createPictureObjects = function (i) {
-  return {
-    'url': 'photos/' + i + '.jpg',
-    'likes': getRandomInt(MINLIKES, MAXLIKES),
-    'comments': COMMENTS[Math.floor(Math.random() * COMMENTS.length)]
-  };
 };
 
-var picDescArr = [];
-var putObjectToArray = function () {
-  for (var i = 1; i <= PHOTOCOUNT + 1; i++) {
-    picDescArr.push(createPictureObjects(i));
+var getRandomElement = function (massive) {
+  return massive[Math.floor(Math.random() * massive.length)];
+};
+
+var pictureDescription = [];
+var pictures = function (comments, photocoun, minlikes, maxlikes) {
+  for (var i = 1; i <= photocoun + 1; i++) {
+    pictureDescription.push(
+      {
+        'url': 'photos/' + i + '.jpg',
+        'likes': getRandomFromInterval(minlikes, maxlikes),
+        'comments': getRandomElement(comments)
+      }
+    );
   }
+  return pictureDescription;
 };
 
-var createDomElement = function (picture) {
+var createPictureNode = function (picture) {
   var pictureElement = pictureTemplate.cloneNode(true);
   pictureElement.querySelector('img').setAttribute('src', picture.url);
   pictureElement.querySelector('span.picture-likes').textContent = picture.likes;
@@ -49,24 +52,24 @@ var createDomElement = function (picture) {
   return pictureElement;
 };
 
-var renderDomElements = function () {
+var renderPicture = function () {
   var fragment = document.createDocumentFragment();
-  for (var i = 0; i < picDescArr.length; i++) {
-    fragment.appendChild(createDomElement(picDescArr[i]));
+  for (var i = 0; i < pictureDescription.length; i++) {
+    fragment.appendChild(createPictureNode(pictureDescription[i]));
   }
   document.querySelector('.pictures').appendChild(fragment);
 };
 
-var fillAndShowGalleryOverlay = function () {
+var fillGalleryOverlay = function () {
   var galleryOverlay = document.querySelector(selectors.galleryOverlay);
-  var k = getRandomInt(0, PHOTOCOUNT);
-  galleryOverlay.querySelector(selectors.gallery).setAttribute('src', picDescArr[k].url);
-  galleryOverlay.querySelector(selectors.likes).textContent = picDescArr[k].likes;
-  galleryOverlay.querySelector(selectors.comments).textContent = picDescArr[k].comments;
+  var randomvalue = getRandomFromInterval(0, PHOTOCOUNT);
+  galleryOverlay.querySelector(selectors.gallery).setAttribute('src', pictureDescription[randomvalue].url);
+  galleryOverlay.querySelector(selectors.likes).textContent = pictureDescription[randomvalue].likes;
+  galleryOverlay.querySelector(selectors.comments).textContent = pictureDescription[randomvalue].comments;
   galleryOverlay.classList.remove('hidden');
 };
 
-putObjectToArray();
-renderDomElements();
+pictures(COMMENTS, PHOTOCOUNT, MINLIKES, MAXLIKES);
+renderPicture();
 document.querySelector(selectors.upload).classList.add('hidden');
-fillAndShowGalleryOverlay();
+fillGalleryOverlay();
