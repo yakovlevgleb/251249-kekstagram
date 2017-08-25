@@ -26,23 +26,26 @@ var getRandomFromInterval = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-var getRandomElement = function (massive) {
-  return massive[Math.floor(Math.random() * massive.length)];
+var getRandomElement = function (array) {
+  return array[Math.floor(Math.random() * array.length)];
 };
 
-var pictureDescription = [];
-var pictures = function (comments, photocoun, minlikes, maxlikes) {
-  for (var i = 1; i <= photocoun + 1; i++) {
+
+var fillArray = function () {
+  var pictureDescription = [];
+  for (var i = 1; i <= PHOTOCOUNT + 1; i++) {
     pictureDescription.push(
       {
         'url': 'photos/' + i + '.jpg',
-        'likes': getRandomFromInterval(minlikes, maxlikes),
-        'comments': getRandomElement(comments)
+        'likes': getRandomFromInterval(MINLIKES, MAXLIKES),
+        'comments': getRandomElement(COMMENTS)
       }
     );
   }
   return pictureDescription;
 };
+
+var pictureDescription = fillArray();
 
 var createPictureNode = function (picture) {
   var pictureElement = pictureTemplate.cloneNode(true);
@@ -52,24 +55,33 @@ var createPictureNode = function (picture) {
   return pictureElement;
 };
 
-var renderPicture = function () {
+var renderPicture = function (array) {
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < pictureDescription.length; i++) {
-    fragment.appendChild(createPictureNode(pictureDescription[i]));
+    fragment.appendChild(createPictureNode(array[i]));
   }
   document.querySelector('.pictures').appendChild(fragment);
 };
 
-var fillGalleryOverlay = function () {
-  var galleryOverlay = document.querySelector(selectors.galleryOverlay);
+var galleryOverlay = document.querySelector(selectors.galleryOverlay);
+
+var fillGallery = function (overlay) {
   var randomvalue = getRandomFromInterval(0, PHOTOCOUNT);
-  galleryOverlay.querySelector(selectors.gallery).setAttribute('src', pictureDescription[randomvalue].url);
-  galleryOverlay.querySelector(selectors.likes).textContent = pictureDescription[randomvalue].likes;
-  galleryOverlay.querySelector(selectors.comments).textContent = pictureDescription[randomvalue].comments;
-  galleryOverlay.classList.remove('hidden');
+  overlay.querySelector(selectors.gallery).setAttribute('src', pictureDescription[randomvalue].url);
+  overlay.querySelector(selectors.likes).textContent = pictureDescription[randomvalue].likes;
+  overlay.querySelector(selectors.comments).textContent = pictureDescription[randomvalue].comments;
+
 };
 
-pictures(COMMENTS, PHOTOCOUNT, MINLIKES, MAXLIKES);
-renderPicture();
+var showGallery = function functionName(overlay) {
+  overlay.classList.remove('hidden');
+};
+
+var renderGallery = function (overlay) {
+  fillGallery(overlay);
+  showGallery(overlay);
+};
+
+renderPicture(pictureDescription);
 document.querySelector(selectors.upload).classList.add('hidden');
-fillGalleryOverlay();
+renderGallery(galleryOverlay);
