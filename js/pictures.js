@@ -69,7 +69,7 @@ var fillGallery = function (overlay) {
   var randomvalue = getRandomFromInterval(0, PHOTOCOUNT);
   overlay.querySelector(selectors.gallery).setAttribute('src', pictureDescription[randomvalue].url);
   overlay.querySelector(selectors.likes).textContent = pictureDescription[randomvalue].likes;
-  overlay.querySelector(selectors.comments).textContent = pictureDescription[randomvalue].comments;
+  overlay.querySelector(selectors.comments).textContent = pictureDescription[randomvalue].comments.length;
 
 };
 
