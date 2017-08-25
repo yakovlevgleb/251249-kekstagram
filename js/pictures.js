@@ -38,7 +38,7 @@ var fillArray = function () {
       {
         'url': 'photos/' + i + '.jpg',
         'likes': getRandomFromInterval(MINLIKES, MAXLIKES),
-        'comments': getRandomElement(COMMENTS)
+        'comments': [getRandomElement(COMMENTS)]
       }
     );
   }
