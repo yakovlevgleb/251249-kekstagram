@@ -3,6 +3,8 @@
 var MINLIKES = 15;
 var MAXLIKES = 200;
 var PHOTOCOUNT = 25;
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
 var COMMENTS = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
@@ -65,23 +67,56 @@ var renderPicture = function (array) {
 
 var galleryOverlay = document.querySelector(selectors.galleryOverlay);
 
-var fillGallery = function (overlay) {
-  var randomvalue = getRandomFromInterval(0, PHOTOCOUNT);
-  overlay.querySelector(selectors.gallery).setAttribute('src', pictureDescription[randomvalue].url);
-  overlay.querySelector(selectors.likes).textContent = pictureDescription[randomvalue].likes;
-  overlay.querySelector(selectors.comments).textContent = pictureDescription[randomvalue].comments.length;
-
+var fillGallery = function (overlay, fotoNumber) {
+  overlay.querySelector(selectors.gallery).setAttribute('src', pictureDescription[fotoNumber].url);
+  overlay.querySelector(selectors.likes).textContent = pictureDescription[fotoNumber].likes;
+  overlay.querySelector(selectors.comments).textContent = pictureDescription[fotoNumber].comments.length;
 };
 
 var showGallery = function functionName(overlay) {
   overlay.classList.remove('hidden');
 };
 
+var getIndex = function (el) {
+  var i = -1;
+
+  while (el !== null) {
+    if (el.nodeType === 1) {
+      i++;
+    }
+    el = el.previousSibling;
+  }
+
+  return i;
+};
+
 var renderGallery = function (overlay) {
-  fillGallery(overlay);
-  showGallery(overlay);
+  document.querySelector('.pictures').addEventListener('click', function (evt) {
+    evt.preventDefault();
+    var target = evt.target.parentNode;
+    var k = 0;
+    for (var i = 0; i <= pictureDescription.length; i++) {
+      if (pictureDescription[getIndex(target)] === pictureDescription[i]) {
+        fillGallery(galleryOverlay, k);
+        showGallery(galleryOverlay);
+        return;
+      }
+      k++;
+    }
+  });
 };
 
 renderPicture(pictureDescription);
 document.querySelector(selectors.upload).classList.add('hidden');
 renderGallery(galleryOverlay);
+
+document.addEventListener('keydown', function (event) {
+  if (event.keyCode === ESC_KEYCODE) {
+    closePicture();
+  }
+});
+
+var closePicture = function () {
+  var galleryElement = document.querySelector('.gallery-overlay');
+  galleryElement.classList.add('hidden');
+};
