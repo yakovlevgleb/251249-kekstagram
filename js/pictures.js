@@ -4,7 +4,6 @@ var MINLIKES = 15;
 var MAXLIKES = 200;
 var PHOTOCOUNT = 25;
 var ESC_KEYCODE = 27;
-var ENTER_KEYCODE = 13;
 var COMMENTS = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
@@ -24,6 +23,18 @@ var selectors = {
 
 var pictureTemplate = document.querySelector('#picture-template').content;
 
+document.addEventListener('keydown', function (event) {
+  if (event.keyCode === ESC_KEYCODE) {
+    var galleryElement = document.querySelector('.gallery-overlay');
+    galleryElement.classList.add('hidden');
+  }
+});
+
+document.querySelector('.gallery-overlay-close').addEventListener('click', function () {
+  var galleryElement = document.querySelector('.gallery-overlay');
+  galleryElement.classList.add('hidden');
+});
+
 var getRandomFromInterval = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
@@ -32,7 +43,6 @@ var getRandomElement = function (array) {
   return array[Math.floor(Math.random() * array.length)];
 };
 
-
 var fillArray = function () {
   var pictureDescription = [];
   for (var i = 1; i <= PHOTOCOUNT + 1; i++) {
@@ -40,7 +50,7 @@ var fillArray = function () {
       {
         'url': 'photos/' + i + '.jpg',
         'likes': getRandomFromInterval(MINLIKES, MAXLIKES),
-        'comments': [getRandomElement(COMMENTS)]
+        'comments': [getRandomElement(COMMENTS)],
       }
     );
   }
@@ -48,19 +58,21 @@ var fillArray = function () {
 };
 
 var pictureDescription = fillArray();
+var dataIndex = [];
 
-var createPictureNode = function (picture) {
+var createPictureNode = function (picture, i) {
   var pictureElement = pictureTemplate.cloneNode(true);
   pictureElement.querySelector('img').setAttribute('src', picture.url);
   pictureElement.querySelector('span.picture-likes').textContent = picture.likes;
   pictureElement.querySelector('span.picture-comments').textContent = picture.comments;
+  pictureElement.setAttribute = dataIndex[i];
   return pictureElement;
 };
 
 var renderPicture = function (array) {
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < pictureDescription.length; i++) {
-    fragment.appendChild(createPictureNode(array[i]));
+    fragment.appendChild(createPictureNode(array[i], i));
   }
   document.querySelector('.pictures').appendChild(fragment);
 };
@@ -77,46 +89,19 @@ var showGallery = function functionName(overlay) {
   overlay.classList.remove('hidden');
 };
 
-var getIndex = function (el) {
-  var i = -1;
-
-  while (el !== null) {
-    if (el.nodeType === 1) {
-      i++;
-    }
-    el = el.previousSibling;
-  }
-
-  return i;
-};
-
 var renderGallery = function (overlay) {
   document.querySelector('.pictures').addEventListener('click', function (evt) {
     evt.preventDefault();
-    var target = evt.target.parentNode;
-    var k = 0;
-    for (var i = 0; i <= pictureDescription.length; i++) {
-      if (pictureDescription[getIndex(target)] === pictureDescription[i]) {
-        fillGallery(galleryOverlay, k);
-        showGallery(galleryOverlay);
-        return;
-      }
-      k++;
-    }
+    var target = evt.target;
+    console.log(target);
+    var ind = target;
+    console.log(ind);
+    fillGallery(galleryOverlay, ind);
+    showGallery(galleryOverlay);
+    return;
   });
 };
 
 renderPicture(pictureDescription);
 document.querySelector(selectors.upload).classList.add('hidden');
 renderGallery(galleryOverlay);
-
-document.addEventListener('keydown', function (event) {
-  if (event.keyCode === ESC_KEYCODE) {
-    closePicture();
-  }
-});
-
-var closePicture = function () {
-  var galleryElement = document.querySelector('.gallery-overlay');
-  galleryElement.classList.add('hidden');
-};
