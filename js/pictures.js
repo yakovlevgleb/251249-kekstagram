@@ -58,14 +58,13 @@ var fillArray = function () {
 };
 
 var pictureDescription = fillArray();
-var dataIndex = [];
 
 var createPictureNode = function (picture, i) {
   var pictureElement = pictureTemplate.cloneNode(true);
   pictureElement.querySelector('img').setAttribute('src', picture.url);
   pictureElement.querySelector('span.picture-likes').textContent = picture.likes;
   pictureElement.querySelector('span.picture-comments').textContent = picture.comments;
-  pictureElement.querySelector('img').dataIndex = i;
+  pictureElement.querySelector('img').setAttribute('data-index', i);
   return pictureElement;
 };
 
@@ -94,9 +93,7 @@ var renderGallery = function (overlay) {
   document.querySelector('.pictures').addEventListener('click', function (evt) {
     evt.preventDefault();
     var target = evt.target;
-    console.log(target);
-    var ind = target.dataIndex;
-    console.log(ind);
+    var ind = target.getAttribute('data-index');
     fillGallery(galleryOverlay, ind);
     showGallery(galleryOverlay);
     return;
