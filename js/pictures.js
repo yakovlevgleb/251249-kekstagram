@@ -35,6 +35,16 @@ document.querySelector('.gallery-overlay-close').addEventListener('click', funct
   galleryElement.classList.add('hidden');
 });
 
+document.querySelector('#upload-select-image').addEventListener('onchange', function () {
+  document.querySelector('.upload-overlay').classList.remove('hidden');
+  document.querySelector('#upload-file').classList.add('hidden');
+});
+
+document.querySelector('.upload-form-cancel').addEventListener('click', function () {
+  document.querySelector('.upload-overlay').classList.add('hidden');
+  document.querySelector('#upload-file').classList.remove('hidden');
+});
+
 var getRandomFromInterval = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
