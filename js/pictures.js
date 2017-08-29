@@ -24,8 +24,9 @@ var selectors = {
 var pictureTemplate = document.querySelector('#picture-template').content;
 
 document.addEventListener('keydown', function (event) {
-  if (event.keyCode === ESC_KEYCODE) {
+  if (event.keyCode === ESC_KEYCODE && document.activeElement !== document.querySelector('.upload-form-description')) {
     var galleryElement = document.querySelector('.gallery-overlay');
+    document.querySelector('.upload-overlay').classList.add('hidden');
     galleryElement.classList.add('hidden');
   }
 });
@@ -35,7 +36,7 @@ document.querySelector('.gallery-overlay-close').addEventListener('click', funct
   galleryElement.classList.add('hidden');
 });
 
-document.querySelector('#upload-file').addEventListener('onchange', function () {
+document.querySelector('#upload-file').addEventListener('change', function () {
   document.querySelector('.upload-overlay').classList.remove('hidden');
   document.querySelector('#upload-file').classList.add('hidden');
 });
@@ -113,3 +114,24 @@ var renderGallery = function (overlay) {
 renderPicture(pictureDescription);
 document.querySelector(selectors.upload).classList.add('hidden');
 renderGallery(galleryOverlay);
+
+var elementName;
+
+document.querySelector('.upload-effect').addEventListener('click', function (evt) {
+  document.querySelector('.effect-image-preview').classList.remove('effect-' + elementName);
+  var target = evt.target;
+  var ind = target.parentNode.getAttribute('for');
+
+  elementName = ind.split('-')[2];
+  document.querySelector('.effect-image-preview').classList.add('effect-' + elementName);
+  evt.preventDefault();
+});
+
+document.querySelector('.upload-resize-controls-button-dec').addEventListener('click', function () {
+  var persentValue = document.querySelector('.upload-resize-controls-value').value;
+  var chebupeli = parseInt(persentValue, 10);
+  chebupeli = chebupeli - 25;
+  console.log(chebupeli);
+  document.querySelector('.upload-resize-controls-value').value = chebupeli + '%';
+
+});
