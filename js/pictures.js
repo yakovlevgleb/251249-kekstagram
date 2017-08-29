@@ -120,18 +120,42 @@ var elementName;
 document.querySelector('.upload-effect').addEventListener('click', function (evt) {
   document.querySelector('.effect-image-preview').classList.remove('effect-' + elementName);
   var target = evt.target;
-  var ind = target.parentNode.getAttribute('for');
-
-  elementName = ind.split('-')[2];
-  document.querySelector('.effect-image-preview').classList.add('effect-' + elementName);
-  evt.preventDefault();
+  var elementStyle = target.parentNode.getAttribute('for').replace('upload-', '');
+  var imagePreviewUploadOverlay = document.querySelector('.upload-overlay').querySelector('.effect-image-preview');
+  imagePreviewUploadOverlay.classList = '';
+  imagePreviewUploadOverlay.classList.add('effect-image-preview');
+  imagePreviewUploadOverlay.classList.add(elementStyle);
 });
 
 document.querySelector('.upload-resize-controls-button-dec').addEventListener('click', function () {
   var persentValue = document.querySelector('.upload-resize-controls-value').value;
-  var chebupeli = parseInt(persentValue, 10);
-  chebupeli = chebupeli - 25;
-  console.log(chebupeli);
-  document.querySelector('.upload-resize-controls-value').value = chebupeli + '%';
+  var intValue = parseInt(persentValue, 10);
+  intValue -= 25;
+  if (intValue < 25) {
+    intValue = 25;
+  }
+  document.querySelector('.upload-resize-controls-value').value = intValue + '%';
+  intValue = intValue / 100;
+  var imagePreview = document.querySelector('.effect-image-preview');
+  imagePreview.style.transform = 'scale(' + intValue + ')';
+});
 
+document.querySelector('.upload-resize-controls-button-inc').addEventListener('click', function () {
+  var persentValue = document.querySelector('.upload-resize-controls-value').value;
+  var intValue = parseInt(persentValue, 10);
+  intValue += 25;
+  if (intValue > 100) {
+    intValue = 100;
+  }
+  document.querySelector('.upload-resize-controls-value').value = intValue + '%';
+  intValue = intValue / 100;
+  var imagePreview = document.querySelector('.effect-image-preview');
+  imagePreview.style.transform = 'scale(' + intValue + ')';
+});
+
+document.querySelector('.upload-resize-controls-value').addEventListener('change', function () {
+  var persentValue = document.querySelector('.upload-resize-controls-value').value;
+  var intValue = parseInt(persentValue, 10) / 100;
+  var imagePreview = document.querySelector('.effect-image-preview');
+  imagePreview.style.transform = 'scale(' + intValue + ')';
 });

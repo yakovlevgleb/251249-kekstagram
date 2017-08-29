@@ -25,7 +25,9 @@
 </form>
 
 <form class="upload-form" id="upload-select-image" method="post"
+      method="post"
       enctype="multipart/form-data"
+      action="https://1510.dump.academy/kekstagram"
       autocomplete="off">
   <div class="upload-image">
     <input type="file" id="upload-file" class="upload-input" name="filename" required>
@@ -38,7 +40,7 @@
         <button type="button"
                 class="upload-resize-control upload-resize-controls-button upload-resize-controls-button-dec">–
         </button><!--
-        --><input type="text" class="upload-resize-control upload-resize-controls-value" value="55%" readonly title="Image Scale" name="scale"/><!--
+        --><input type="text" class="upload-resize-control upload-resize-controls-value" value="100%" readonly title="Image Scale" name="scale" step="25%" maxlength="100%" minlength="25%"/><!--
         --><button type="button"
                 class="upload-resize-control upload-resize-controls-button upload-resize-controls-button-inc">+
         </button>
