@@ -35,7 +35,7 @@ document.querySelector('.gallery-overlay-close').addEventListener('click', funct
   galleryElement.classList.add('hidden');
 });
 
-document.querySelector('#upload-select-image').addEventListener('onchange', function () {
+document.querySelector('#upload-file').addEventListener('onchange', function () {
   document.querySelector('.upload-overlay').classList.remove('hidden');
   document.querySelector('#upload-file').classList.add('hidden');
 });
