@@ -139,10 +139,16 @@ var addFilterClass = function (elementStyle) {
   imagePreviewUploadOverlay.classList.add(elementStyle);
 };
 
+var MINPERSENT = 25;
+var MAXPERSENR = 100;
+var STEPPERSENT = 25;
+var MAXHASHTAGLENGHT = 20;
+var MAXHASHTAGS = 5;
+
 uploadResizeControlsButtonDec.addEventListener('click', function () {
   var persentValue = uploadResizeControlsValue.value;
   var intValue = parseInt(persentValue, 10);
-  intValue -= 25;
+  intValue -= STEPPERSENT;
   intValue = validePersentValue(intValue);
   uploadResizeControlsValue.value = intValue + '%';
   changeScale(intValue);
@@ -151,17 +157,17 @@ uploadResizeControlsButtonDec.addEventListener('click', function () {
 uploadResizeControlsButtonInc.addEventListener('click', function () {
   var persentValue = uploadResizeControlsValue.value;
   var intValue = parseInt(persentValue, 10);
-  intValue += 25;
+  intValue += STEPPERSENT;
   intValue = validePersentValue(intValue);
   uploadResizeControlsValue.value = intValue + '%';
   changeScale(intValue);
 });
 
 var validePersentValue = function (intValue) {
-  if (intValue <= 25) {
-    intValue = 25;
-  } else if (intValue > 100) {
-    intValue = 100;
+  if (intValue <= MINPERSENT) {
+    intValue = MINPERSENT;
+  } else if (intValue > MAXPERSENR) {
+    intValue = MAXPERSENR;
   }
   return intValue;
 };
@@ -185,13 +191,13 @@ function hashtagsValid(evt, noSharp, isRepeated, isLong, tooMuch) {
   var target = evt.target;
 
   if (isRepeated) {
-    target.setCustomValidity('Зэштэги не должны повторяться');
+    target.setCustomValidity('Хэштэги не должны повторяться');
   } else if (noSharp) {
-    target.setCustomValidity('Хэштэги должны начинаться с \'#\' разделя их \' \'');
+    target.setCustomValidity('Хэштэги должны начинаться с \'#\' разделяя их \' \'');
   } else if (isLong) {
-    target.setCustomValidity('Хэштэг не может состоять из более 20 символов');
+    target.setCustomValidity('Хэштэг не может состоять из более' + MAXHASHTAGLENGHT + ' символов');
   } else if (tooMuch) {
-    target.setCustomValidity('Количество хэштэгов не должно превышать 5');
+    target.setCustomValidity('Количество хэштэгов не должно превышать ' + MAXHASHTAGS);
   } else {
     target.setCustomValidity('');
   }
@@ -227,5 +233,4 @@ uploadForm.addEventListener('submit', function (evt) {
   document.querySelector('#upload-effect-none').setAttribute('checked');
   uploadFormHashtags.value = '';
   document.querySelector('.upload-form-description').value = '';
-  evt.preventDefault();
 });
