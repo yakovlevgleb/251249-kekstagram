@@ -187,7 +187,7 @@ uploadFormHashtags.addEventListener('change', function (evt) {
   onHashtagsInput(evt);
 });
 
-function hashtagsValid(evt, noSharp, isRepeated, isLong, tooMuch) {
+function processingValidity(evt, noSharp, isRepeated, isLong, tooMuch) {
   var target = evt.target;
 
   if (isRepeated) {
@@ -226,7 +226,7 @@ function onHashtagsInput(evt) {
     }
   }
 
-  hashtagsValid(evt, noSharp, isRepeated, isLong, tooMuch);
+  processingValidity(evt, noSharp, isRepeated, isLong, tooMuch);
 }
 
 uploadForm.addEventListener('submit', function (evt) {
