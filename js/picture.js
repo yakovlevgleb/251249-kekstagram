@@ -13,11 +13,13 @@
     return pictureElement;
   };
 
-  window.renderPicture = function (array) {
-    var fragment = document.createDocumentFragment();
-    for (var i = 0; i < array.length; i++) {
-      fragment.appendChild(createPictureNode(array[i], i));
+  window.picture = {
+    renderPicture: function (array) {
+      var fragment = document.createDocumentFragment();
+      for (var i = 0; i < array.length; i++) {
+        fragment.appendChild(createPictureNode(array[i], i));
+      }
+      document.querySelector('.pictures').appendChild(fragment);
     }
-    document.querySelector('.pictures').appendChild(fragment);
   };
 })();

@@ -18,10 +18,10 @@
     galleryElement.classList.add('hidden');
   });
 
-  window.renderPicture(window.preview.pictureDescription);
+  window.picture.renderPicture(window.preview.pictureDescription);
   document.querySelector(window.preview.selectors.upload).classList.add('hidden');
 
-  window.renderGallery = function (overlay) {
+  (function () {
     document.querySelector('.pictures').addEventListener('click', function (evt) {
       evt.preventDefault();
       var target = evt.target;
@@ -30,7 +30,5 @@
       window.preview.showGallery(galleryOverlay);
       return;
     });
-  };
-
-  window.renderGallery(galleryOverlay);
+  })();
 })();

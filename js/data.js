@@ -21,17 +21,19 @@
     return array[Math.floor(Math.random() * array.length)];
   };
 
-  window.fillArray = function () {
-    var pictureDescription = [];
-    for (var i = 1; i <= PHOTOCOUNT + 1; i++) {
-      pictureDescription.push(
-        {
-          'url': 'photos/' + i + '.jpg',
-          'likes': getRandomFromInterval(MINLIKES, MAXLIKES),
-          'comments': [getRandomElement(COMMENTS)],
-        }
-      );
+  window.data = {
+    fillArray: function () {
+      var pictureDescription = [];
+      for (var i = 1; i <= PHOTOCOUNT + 1; i++) {
+        pictureDescription.push(
+          {
+            'url': 'photos/' + i + '.jpg',
+            'likes': getRandomFromInterval(MINLIKES, MAXLIKES),
+            'comments': [getRandomElement(COMMENTS)],
+          }
+        );
+      }
+      return pictureDescription;
     }
-    return pictureDescription;
   };
 })();
