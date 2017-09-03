@@ -1,8 +1,8 @@
 'use strict';
 
-(function () {
+window.preview = (function () {
 
-  window.preview = {
+  return {
     selectors: {
       gallery: '.gallery-overlay-image',
       galleryOverlay: '.gallery-overlay',

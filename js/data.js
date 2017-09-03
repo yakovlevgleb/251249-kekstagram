@@ -1,5 +1,5 @@
 'use strict';
-(function () {
+window.data = (function () {
   var MINLIKES = 15;
   var MAXLIKES = 200;
   var PHOTOCOUNT = 25;
@@ -21,7 +21,7 @@
     return array[Math.floor(Math.random() * array.length)];
   };
 
-  window.data = {
+  return {
     fillArray: function () {
       var pictureDescription = [];
       for (var i = 1; i <= PHOTOCOUNT + 1; i++) {

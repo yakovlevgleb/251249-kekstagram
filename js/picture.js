@@ -1,6 +1,6 @@
 'use strict';
 
-(function () {
+window.picture = (function () {
 
   var pictureTemplate = document.querySelector('#picture-template').content;
 
@@ -13,7 +13,7 @@
     return pictureElement;
   };
 
-  window.picture = {
+  return {
     renderPicture: function (array) {
       var fragment = document.createDocumentFragment();
       for (var i = 0; i < array.length; i++) {
