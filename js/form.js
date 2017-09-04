@@ -31,6 +31,11 @@
   uploadEffect.addEventListener('click', function (evt) {
     var target = evt.target;
     var elementStyle = target.parentNode.getAttribute('for').replace('upload-', '');
+    if (elementStyle !== 'effect-none') {
+      document.querySelector('.upload-effect-level').classList.remove('hidden');
+    } else {
+      document.querySelector('.upload-effect-level').classList.add('hidden');
+    }
     addFilterClass(elementStyle);
   });
 
@@ -132,7 +137,6 @@
   });
 
   var uploadEffectPin = document.querySelector('.upload-effect-level-pin');
-  var uploadEffectLine = document.querySelector('.upload-effect-level-line');
   var uploadtEffectVal = document.querySelector('.upload-effect-level-val');
 
   uploadEffectPin.addEventListener('mousedown', function (evt) {
@@ -153,16 +157,20 @@
       };
       var min = 0;
       var max = 455;
-      var Offset = uploadEffectPin.offsetLeft;
+      var Offset = uploadEffectPin.offsetLeft - shift.x;
       if (Offset < 0) {
         Offset = min;
       }
       if (Offset > max) {
         Offset = max;
       }
-      uploadEffectPin.style.left = (Offset - shift.x) + 'px';
-      uploadtEffectVal.style.width = (Offset - shift.x) + 'px';
+      uploadEffectPin.style.left = Offset + 'px';
+      uploadtEffectVal.style.width = Offset + 'px';
     };
+
+    if (document.querySelector('.effect-image-preview').classList === 'effect-image-preview effect-chrome"') {
+      document.querySelector('.effect-image-preview').style = 'filter: grayscale = 0';
+    }
 
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
@@ -174,5 +182,4 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   });
-
 }());
