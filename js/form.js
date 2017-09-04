@@ -28,9 +28,25 @@
     document.querySelector('#upload-file').classList.remove('hidden');
   });
 
+  var uploadImageScale = uploadForm.querySelector('.effect-image-preview');
+
   uploadEffect.addEventListener('click', function (evt) {
     var target = evt.target;
     var elementStyle = target.parentNode.getAttribute('for').replace('upload-', '');
+    if (uploadImageScale.classList.contains('effect-marvin')) {
+      uploadImageScale.style.filter = 'invert(20%)';
+    } else if (uploadImageScale.classList.contains('effect-chrome')) {
+      uploadImageScale.style.filter = 'grayscale(0.2)';
+    } else if (uploadImageScale.classList.contains('effect-sepia')) {
+      uploadImageScale.style.filter = 'sepia(0.2)';
+    } else if (uploadImageScale.classList.contains('effect-phobos')) {
+      uploadImageScale.style.filter = 'blur(0.6px)';
+    } else if (uploadImageScale.classList.contains('effect-heat')) {
+      uploadImageScale.style.filter = 'brightness(0.6)';
+    } else {
+      uploadImageScale.style.filter = 'none';
+    }
+
     if (elementStyle !== 'effect-none') {
       document.querySelector('.upload-effect-level').classList.remove('hidden');
     } else {
@@ -158,19 +174,29 @@
       var min = 0;
       var max = 455;
       var Offset = uploadEffectPin.offsetLeft - shift.x;
-      if (Offset < 0) {
-        Offset = min;
-      }
-      if (Offset > max) {
-        Offset = max;
-      }
-      uploadEffectPin.style.left = Offset + 'px';
-      uploadtEffectVal.style.width = Offset + 'px';
-    };
+      if (Offset <= min) {
+        uploadEffectPin.style.left = min + 'px';
+        uploadtEffectVal.style.width = min + 'px';
+      } else if (Offset >= max) {
+        uploadEffectPin.style.left = max + 'px';
+        uploadtEffectVal.style.width = max + 'px';
+      } else {
+        uploadEffectPin.style.left = Offset + 'px';
+        uploadtEffectVal.style.width = Offset + 'px';
 
-    if (document.querySelector('.effect-image-preview').classList === 'effect-image-preview effect-chrome"') {
-      document.querySelector('.effect-image-preview').style = 'filter: grayscale = 0';
-    }
+        if (document.querySelector('.effect-image-preview').classList.contains('effect-chrome')) {
+          document.querySelector('.effect-image-preview').style.filter = 'grayscale(' + Offset / max + ')';
+        } else if (document.querySelector('.effect-image-preview').classList.contains('effect-sepia')) {
+          document.querySelector('.effect-image-preview').style.filter = 'sepia(' + Offset / max + ')';
+        } else if (document.querySelector('.effect-image-preview').classList.contains('effect-marvin')) {
+          document.querySelector('.effect-image-preview').style.filter = 'invert(' + (Offset / max) * 100 + '%)';
+        } else if (document.querySelector('.effect-image-preview').classList.contains('effect-phobos')) {
+          document.querySelector('.effect-image-preview').style.filter = 'blur(' + Math.ceil((Offset / max) * 3) + 'px)';
+        } else if (document.querySelector('.effect-image-preview').classList.contains('effect-heat')) {
+          document.querySelector('.effect-image-preview').style.filter = 'brightness(' + Math.ceil((Offset / max) * 3) + ')';
+        }
+      }
+    };
 
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
