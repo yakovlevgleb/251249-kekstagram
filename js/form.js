@@ -131,4 +131,48 @@
     document.querySelector('.upload-form-description').value = '';
   });
 
+  var uploadEffectPin = document.querySelector('.upload-effect-level-pin');
+  var uploadEffectLine = document.querySelector('.upload-effect-level-line');
+  var uploadtEffectVal = document.querySelector('.upload-effect-level-val');
+
+  uploadEffectPin.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+    var startCoords = {
+      x: evt.clientX,
+    };
+
+    var onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+
+      var shift = {
+        x: startCoords.x - moveEvt.clientX
+      };
+
+      startCoords = {
+        x: moveEvt.clientX,
+      };
+      var min = 0;
+      var max = 455;
+      var Offset = uploadEffectPin.offsetLeft;
+      if (Offset < 0) {
+        Offset = min;
+      }
+      if (Offset > max) {
+        Offset = max;
+      }
+      uploadEffectPin.style.left = (Offset - shift.x) + 'px';
+      uploadtEffectVal.style.width = (Offset - shift.x) + 'px';
+    };
+
+    var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  });
+
 }());
