@@ -33,6 +33,9 @@
   uploadEffect.addEventListener('click', function (evt) {
     var target = evt.target;
     var elementStyle = target.parentNode.getAttribute('for').replace('upload-', '');
+    var defaultValue = 91;
+    uploadEffectPin.style.left = defaultValue + 'px';
+    uploadtEffectVal.style.width = defaultValue + 'px';
     if (uploadImageScale.classList.contains('effect-marvin')) {
       uploadImageScale.style.filter = 'invert(20%)';
     } else if (uploadImageScale.classList.contains('effect-chrome')) {
