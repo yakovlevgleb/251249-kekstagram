@@ -176,27 +176,27 @@
       };
       var min = 0;
       var max = 455;
-      var Offset = uploadEffectPin.offsetLeft - shift.x;
-      if (Offset <= min) {
+      var pinOffset = uploadEffectPin.offsetLeft - shift.x;
+      if (pinOffset <= min) {
         uploadEffectPin.style.left = min + 'px';
         uploadtEffectVal.style.width = min + 'px';
-      } else if (Offset >= max) {
+      } else if (pinOffset >= max) {
         uploadEffectPin.style.left = max + 'px';
         uploadtEffectVal.style.width = max + 'px';
       } else {
-        uploadEffectPin.style.left = Offset + 'px';
-        uploadtEffectVal.style.width = Offset + 'px';
+        uploadEffectPin.style.left = pinOffset + 'px';
+        uploadtEffectVal.style.width = pinOffset + 'px';
 
         if (document.querySelector('.effect-image-preview').classList.contains('effect-chrome')) {
-          document.querySelector('.effect-image-preview').style.filter = 'grayscale(' + Offset / max + ')';
+          document.querySelector('.effect-image-preview').style.filter = 'grayscale(' + pinOffset / max + ')';
         } else if (document.querySelector('.effect-image-preview').classList.contains('effect-sepia')) {
-          document.querySelector('.effect-image-preview').style.filter = 'sepia(' + Offset / max + ')';
+          document.querySelector('.effect-image-preview').style.filter = 'sepia(' + pinOffset / max + ')';
         } else if (document.querySelector('.effect-image-preview').classList.contains('effect-marvin')) {
-          document.querySelector('.effect-image-preview').style.filter = 'invert(' + (Offset / max) * 100 + '%)';
+          document.querySelector('.effect-image-preview').style.filter = 'invert(' + (pinOffset / max) * 100 + '%)';
         } else if (document.querySelector('.effect-image-preview').classList.contains('effect-phobos')) {
-          document.querySelector('.effect-image-preview').style.filter = 'blur(' + Math.ceil((Offset / max) * 3) + 'px)';
+          document.querySelector('.effect-image-preview').style.filter = 'blur(' + Math.ceil((pinOffset / max) * 3) + 'px)';
         } else if (document.querySelector('.effect-image-preview').classList.contains('effect-heat')) {
-          document.querySelector('.effect-image-preview').style.filter = 'brightness(' + Math.ceil((Offset / max) * 3) + ')';
+          document.querySelector('.effect-image-preview').style.filter = 'brightness(' + Math.ceil((pinOffset / max) * 3) + ')';
         }
       }
     };
