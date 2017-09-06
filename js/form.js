@@ -190,8 +190,6 @@
       moveEvt.preventDefault();
       var shift = startCoords - moveEvt.clientX;
 
-      startCoords = moveEvt.clientX;
-
       var min = 0;
       var max = 455;
       var pinOffset = uploadEffectPin.offsetLeft - shift;
