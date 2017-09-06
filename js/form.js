@@ -8,10 +8,10 @@
   var MAXHASHTAGS = 5;
 
   var uploadForm = document.querySelector('.upload-form');
-  var uploadEffect = document.querySelector('.upload-effect');
   var uploadOverlay = document.querySelector('.upload-overlay');
   var uploadFormHashtags = document.querySelector('.upload-form-hashtags');
   var effectImagePreview = document.querySelector('.effect-image-preview');
+  var uploadEffectControl = document.querySelector('.upload-effect-controls');
 
   var uploadResizeControlsValue = document.querySelector('.upload-resize-controls-value');
   var uploadResizeControlsButtonDec = document.querySelector('.upload-resize-controls-button-dec');
@@ -47,6 +47,9 @@
       setFilter: function (val) {
         return 'brightness(' + val * 3 + ')';
       }
+    },
+    'effect-none': {
+      filter: '',
     }
   };
 
@@ -63,9 +66,11 @@
   var uploadImageScale = uploadForm.querySelector('.effect-image-preview');
   var elementStyle;
 
-  uploadEffect.addEventListener('click', function (evt) {
+  uploadEffectControl.addEventListener('click', function (evt) {
     var target = evt.target;
-    elementStyle = target.parentNode.getAttribute('for').replace('upload-', '');
+    if (target.getAttribute('class') === 'upload-effect-preview') {
+      elementStyle = target.parentNode.getAttribute('for').replace('upload-', '');
+    }
     var defaultValue = 91;
     uploadEffectPin.style.left = defaultValue + 'px';
     uploadtEffectVal.style.width = defaultValue + 'px';
@@ -185,23 +190,23 @@
   uploadEffectPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
     var startCoords = evt.clientX;
-
+    var startPinOffset = uploadEffectPin.offsetLeft;
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
       var shift = startCoords - moveEvt.clientX;
 
       var min = 0;
       var max = 455;
-      var pinOffset = uploadEffectPin.offsetLeft - shift;
-      if (pinOffset < min) {
-        pinOffset = min;
-      } else if (pinOffset > max) {
-        pinOffset = max;
+      var newPinOffset = startPinOffset - shift;
+      if (newPinOffset < min) {
+        newPinOffset = min;
+      } else if (newPinOffset > max) {
+        newPinOffset = max;
       }
 
-      document.querySelector('.effect-image-preview').style.filter = filters[elementStyle].setFilter(pinOffset / max);
-      uploadEffectPin.style.left = returnScaleValue(pinOffset);
-      uploadtEffectVal.style.width = returnScaleValue(pinOffset);
+      document.querySelector('.effect-image-preview').style.filter = filters[elementStyle].setFilter(newPinOffset / max);
+      uploadEffectPin.style.left = returnScaleValue(newPinOffset);
+      uploadtEffectVal.style.width = returnScaleValue(newPinOffset);
     };
 
     var onMouseUp = function (upEvt) {
