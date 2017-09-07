@@ -5,6 +5,8 @@
   var MAXPERSENR = 100;
   var MAXHASHTAGLENGHT = 20;
   var MAXHASHTAGS = 5;
+  var MINSCROLLVALUE = 0;
+  var MAXSCROLLVALUE = 455;
 
   var uploadForm = document.querySelector('.upload-form');
   var uploadOverlay = document.querySelector('.upload-overlay');
@@ -90,7 +92,7 @@
     effectImagePreview.style.filter = filters[elementStyle].setFilter(newPinOffset / max);
   };
 
-  window.initializeFilters(setFilterOnPhoto, setPhotoFilter);
+  window.filtersInit.initializeFilters(setFilterOnPhoto, setPhotoFilter, MINSCROLLVALUE, MAXSCROLLVALUE);
 
   var reductionImgSize = function (STEPPERSENT) {
     var persentValue = uploadResizeControlsValue.value;
@@ -110,7 +112,7 @@
     changeScale(intValue);
   };
 
-  window.initializeScale(reductionImgSize, increaseImgSize);
+  window.scaleInit.initializeScale(reductionImgSize, increaseImgSize);
 
   var validePersentValue = function (intValue) {
     if (intValue <= MINPERSENT) {
