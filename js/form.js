@@ -1,12 +1,12 @@
 'use strict';
 
 (function () {
-  var MINPERSENT = 25;
-  var MAXPERSENR = 100;
-  var MAXHASHTAGLENGHT = 20;
-  var MAXHASHTAGS = 5;
-  var MINSCROLLVALUE = 0;
-  var MAXSCROLLVALUE = 455;
+  var MIN_PERSENT = 25;
+  var MAX_PERSENT = 100;
+  var MAX_HASHTAG_LENGHT = 20;
+  var MAX_HASHTAGS = 5;
+  var MIN_SCROLL_VALUE = 0;
+  var MAX_SCROLL_VALUE = 455;
 
   var uploadForm = document.querySelector('.upload-form');
   var uploadOverlay = document.querySelector('.upload-overlay');
@@ -92,7 +92,7 @@
     effectImagePreview.style.filter = filters[elementStyle].setFilter(newPinOffset / max);
   };
 
-  window.filtersInit.initializeFilters(setFilterOnPhoto, setPhotoFilter, MINSCROLLVALUE, MAXSCROLLVALUE);
+  window.filtersInit.initializeFilters(setFilterOnPhoto, setPhotoFilter, MIN_SCROLL_VALUE, MAX_SCROLL_VALUE);
 
   var reductionImgSize = function (STEPPERSENT) {
     var persentValue = uploadResizeControlsValue.value;
@@ -115,10 +115,10 @@
   window.scaleInit.initializeScale(reductionImgSize, increaseImgSize);
 
   var validePersentValue = function (intValue) {
-    if (intValue <= MINPERSENT) {
-      intValue = MINPERSENT;
-    } else if (intValue > MAXPERSENR) {
-      intValue = MAXPERSENR;
+    if (intValue <= MIN_PERSENT) {
+      intValue = MIN_PERSENT;
+    } else if (intValue > MAX_PERSENT) {
+      intValue = MAX_PERSENT;
     }
     return intValue;
   };
@@ -146,9 +146,9 @@
     } else if (noSharp) {
       target.setCustomValidity('Хэштэги должны начинаться с \'#\' разделяя их \' \'');
     } else if (isLong) {
-      target.setCustomValidity('Хэштэг не может состоять из более' + MAXHASHTAGLENGHT + ' символов');
+      target.setCustomValidity('Хэштэг не может состоять из более' + MAX_HASHTAG_LENGHT + ' символов');
     } else if (tooMuch) {
-      target.setCustomValidity('Количество хэштэгов не должно превышать ' + MAXHASHTAGS);
+      target.setCustomValidity('Количество хэштэгов не должно превышать ' + MAX_HASHTAGS);
     } else {
       target.setCustomValidity('');
     }

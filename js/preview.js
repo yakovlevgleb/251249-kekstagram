@@ -11,7 +11,7 @@ window.preview = (function () {
       upload: '.upload-overlay'
     },
 
-    pictureDescription: window.data.fillArray(),
+    pictureDescription: window.data.fillArray,
 
     fillGallery: function (overlay, fotoNumber) {
       overlay.querySelector(window.preview.selectors.gallery).setAttribute('src', window.preview.pictureDescription[fotoNumber].url);

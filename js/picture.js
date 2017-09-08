@@ -4,11 +4,15 @@ window.picture = (function () {
 
   var pictureTemplate = document.querySelector('#picture-template').content;
 
+  var getRandomElement = function (array) {
+    return array[Math.floor(Math.random() * array.length)];
+  };
+
   var createPictureNode = function (picture, i) {
     var pictureElement = pictureTemplate.cloneNode(true);
     pictureElement.querySelector('img').setAttribute('src', picture.url);
     pictureElement.querySelector('span.picture-likes').textContent = picture.likes;
-    pictureElement.querySelector('span.picture-comments').textContent = picture.comments;
+    pictureElement.querySelector('span.picture-comments').textContent = getRandomElement(picture.comments);
     pictureElement.querySelector('img').setAttribute('data-index', i);
     return pictureElement;
   };
