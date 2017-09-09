@@ -1,7 +1,7 @@
 'use strict';
 window.backend = (function () {
   var SERVER_URL = 'https://1510.dump.academy/kekstagram';
-  var XHR_TIMEOUT = 5000;
+  var XHR_TIMEOUT = 6000;
   var setup = function (onSuccess, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
@@ -25,7 +25,7 @@ window.backend = (function () {
   };
 
   return {
-    load: function (onLoad) {
+    load: function (onLoad, onError) {
       var xhr = setup(onLoad);
 
       xhr.open('GET', SERVER_URL + '/data');

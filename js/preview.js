@@ -11,12 +11,10 @@ window.preview = (function () {
       upload: '.upload-overlay'
     },
 
-    pictureDescription: window.data.fillArray,
-
-    fillGallery: function (overlay, fotoNumber) {
-      overlay.querySelector(window.preview.selectors.gallery).setAttribute('src', window.preview.pictureDescription[fotoNumber].url);
-      overlay.querySelector(window.preview.selectors.likes).textContent = window.preview.pictureDescription[fotoNumber].likes;
-      overlay.querySelector(window.preview.selectors.comments).textContent = window.preview.pictureDescription[fotoNumber].comments.length;
+    fillGallery: function (overlay, index, array) {
+      overlay.querySelector(window.preview.selectors.gallery).setAttribute('src', array[index].url);
+      overlay.querySelector(window.preview.selectors.likes).textContent = array[index].likes;
+      overlay.querySelector(window.preview.selectors.comments).textContent = array[index].comments.length;
     },
 
     showGallery: function functionName(overlay) {
