@@ -1,21 +1,24 @@
 'use strict';
 
 (function () {
-  var MINPERSENT = 25;
-  var MAXPERSENR = 100;
-  var MAXHASHTAGLENGHT = 20;
-  var MAXHASHTAGS = 5;
-  var MINSCROLLVALUE = 0;
-  var MAXSCROLLVALUE = 455;
+  var MIN_PERCENT = 25;
+  var MAX_PERCENT = 100;
+  var MAX_HASHTAG_LENGHT = 20;
+  var MAX_HASHTAGS = 5;
+  var MIN_SCROLL_VALUE = 0;
+  var MAX_SCROLL_VALUE = 455;
 
   var uploadForm = document.querySelector('.upload-form');
   var uploadOverlay = document.querySelector('.upload-overlay');
+  var levelContainer = document.querySelector('.upload-effect-level');
+  var imagePreview = uploadForm.querySelector('.upload-form-preview');
   var uploadFormHashtags = document.querySelector('.upload-form-hashtags');
   var effectImagePreview = document.querySelector('.effect-image-preview');
   var uploadEffectPin = document.querySelector('.upload-effect-level-pin');
   var uploadtEffectVal = document.querySelector('.upload-effect-level-val');
-
-  var uploadResizeControlsValue = document.querySelector('.upload-resize-controls-value');
+  var ResizeControls = uploadForm.querySelector('.upload-resize-controls-value');
+  var input = uploadForm.querySelectorAll('input[type=radio]');
+  var elementStyle;
 
   var filters = {
     'effect-marvin': {
@@ -63,8 +66,6 @@
     document.querySelector('#upload-file').classList.remove('hidden');
   });
 
-  var elementStyle;
-
   var setPhotoFilter = function (target) {
     if (target.getAttribute('class') === 'upload-effect-preview') {
       elementStyle = target.parentNode.getAttribute('for').replace('upload-', '');
@@ -92,33 +93,33 @@
     effectImagePreview.style.filter = filters[elementStyle].setFilter(newPinOffset / max);
   };
 
-  window.filtersInit.initializeFilters(setFilterOnPhoto, setPhotoFilter, MINSCROLLVALUE, MAXSCROLLVALUE);
+  window.filtersInit.initializeFilters(setFilterOnPhoto, setPhotoFilter, MIN_SCROLL_VALUE, MAX_SCROLL_VALUE);
 
   var reductionImgSize = function (STEPPERSENT) {
-    var persentValue = uploadResizeControlsValue.value;
+    var persentValue = ResizeControls.value;
     var intValue = parseInt(persentValue, 10);
     intValue -= STEPPERSENT;
     intValue = validePersentValue(intValue);
-    uploadResizeControlsValue.value = intValue + '%';
+    ResizeControls.value = intValue + '%';
     changeScale(intValue);
   };
 
   var increaseImgSize = function (STEPPERSENT) {
-    var persentValue = uploadResizeControlsValue.value;
+    var persentValue = ResizeControls.value;
     var intValue = parseInt(persentValue, 10);
     intValue += STEPPERSENT;
     intValue = validePersentValue(intValue);
-    uploadResizeControlsValue.value = intValue + '%';
+    ResizeControls.value = intValue + '%';
     changeScale(intValue);
   };
 
   window.scaleInit.initializeScale(reductionImgSize, increaseImgSize);
 
   var validePersentValue = function (intValue) {
-    if (intValue <= MINPERSENT) {
-      intValue = MINPERSENT;
-    } else if (intValue > MAXPERSENR) {
-      intValue = MAXPERSENR;
+    if (intValue <= MIN_PERCENT) {
+      intValue = MIN_PERCENT;
+    } else if (intValue > MAX_PERCENT) {
+      intValue = MAX_PERCENT;
     }
     return intValue;
   };
@@ -128,8 +129,8 @@
     effectImagePreview.style.transform = 'scale(' + value + ')';
   };
 
-  uploadResizeControlsValue.addEventListener('change', function () {
-    var persentValue = uploadResizeControlsValue.value;
+  ResizeControls.addEventListener('change', function () {
+    var persentValue = ResizeControls.value;
     var index = parseInt(persentValue, 10) / 100;
     effectImagePreview.style.transform = 'scale(' + index + ')';
   });
@@ -146,9 +147,9 @@
     } else if (noSharp) {
       target.setCustomValidity('Хэштэги должны начинаться с \'#\' разделяя их \' \'');
     } else if (isLong) {
-      target.setCustomValidity('Хэштэг не может состоять из более' + MAXHASHTAGLENGHT + ' символов');
+      target.setCustomValidity('Хэштэг не может состоять из более' + MAX_HASHTAG_LENGHT + ' символов');
     } else if (tooMuch) {
-      target.setCustomValidity('Количество хэштэгов не должно превышать ' + MAXHASHTAGS);
+      target.setCustomValidity('Количество хэштэгов не должно превышать ' + MAX_HASHTAGS);
     } else {
       target.setCustomValidity('');
     }
@@ -180,9 +181,36 @@
     processingValidity(evt, noSharp, isRepeated, isLong, tooMuch);
   }
 
+  var resetForm = function () {
+    var classes = effectImagePreview.className.split(' ');
+    effectImagePreview.classList.remove(classes[1]);
+    effectImagePreview.classList.add('effect-none');
+
+    if (elementStyle !== 'effect-none') {
+      document.querySelector('.upload-effect-level').classList.remove('elementStyle');
+    } else {
+      document.querySelector('.upload-effect-level').classList.add('effect-none');
+    }
+
+    for (var i = 0; i < input.length; i++) {
+      if (input[i].checked) {
+        input[i].removeAttribute('checked');
+      }
+    }
+    input[0].setAttribute('checked', 'true');
+
+    imagePreview.style.transform = 'scale(1)';
+    effectImagePreview.style.filter = 'none';
+    ResizeControls.setAttribute('value', '100%');
+    levelContainer.classList.add('hidden');
+    uploadForm.reset();
+  };
+
   uploadForm.addEventListener('submit', function (evt) {
-    document.querySelector('#upload-effect-none').setAttribute('checked');
-    uploadFormHashtags.value = '';
-    document.querySelector('.upload-form-description').value = '';
+    evt.preventDefault();
+    window.backend.save(new FormData(uploadForm), function () {
+      uploadOverlay.classList.add('hidden');
+      resetForm();
+    }, window.picture.errorHandler);
   });
 }());
