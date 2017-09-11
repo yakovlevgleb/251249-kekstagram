@@ -18,6 +18,7 @@
   var uploadtEffectVal = document.querySelector('.upload-effect-level-val');
   var ResizeControls = uploadForm.querySelector('.upload-resize-controls-value');
   var input = uploadForm.querySelectorAll('input[type=radio]');
+  var elementStyle;
 
   var filters = {
     'effect-marvin': {
@@ -64,8 +65,6 @@
     document.querySelector('.upload-overlay').classList.add('hidden');
     document.querySelector('#upload-file').classList.remove('hidden');
   });
-
-  var elementStyle;
 
   var setPhotoFilter = function (target) {
     if (target.getAttribute('class') === 'upload-effect-preview') {
@@ -183,9 +182,15 @@
   }
 
   var resetForm = function () {
-    window.classes = effectImagePreview.className.split(' ');
-    effectImagePreview.classList.remove(window.classes[1]);
+    var classes = effectImagePreview.className.split(' ');
+    effectImagePreview.classList.remove(classes[1]);
     effectImagePreview.classList.add('effect-none');
+
+    if (elementStyle !== 'effect-none') {
+      document.querySelector('.upload-effect-level').classList.remove('elementStyle');
+    } else {
+      document.querySelector('.upload-effect-level').classList.add('effect-none');
+    }
 
     for (var i = 0; i < input.length; i++) {
       if (input[i].checked) {
