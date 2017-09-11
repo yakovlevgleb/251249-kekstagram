@@ -1,8 +1,8 @@
 'use strict';
 
 (function () {
-  var MIN_PERSENT = 25;
-  var MAX_PERSENT = 100;
+  var MIN_PERCENT = 25;
+  var MAX_PERCENT = 100;
   var MAX_HASHTAG_LENGHT = 20;
   var MAX_HASHTAGS = 5;
   var MIN_SCROLL_VALUE = 0;
@@ -10,12 +10,14 @@
 
   var uploadForm = document.querySelector('.upload-form');
   var uploadOverlay = document.querySelector('.upload-overlay');
+  var levelContainer = document.querySelector('.upload-effect-level');
+  var imagePreview = uploadForm.querySelector('.upload-form-preview');
   var uploadFormHashtags = document.querySelector('.upload-form-hashtags');
   var effectImagePreview = document.querySelector('.effect-image-preview');
   var uploadEffectPin = document.querySelector('.upload-effect-level-pin');
   var uploadtEffectVal = document.querySelector('.upload-effect-level-val');
-
-  var uploadResizeControlsValue = document.querySelector('.upload-resize-controls-value');
+  var ResizeControls = uploadForm.querySelector('.upload-resize-controls-value');
+  var input = uploadForm.querySelectorAll('input[type=radio]');
 
   var filters = {
     'effect-marvin': {
@@ -95,30 +97,30 @@
   window.filtersInit.initializeFilters(setFilterOnPhoto, setPhotoFilter, MIN_SCROLL_VALUE, MAX_SCROLL_VALUE);
 
   var reductionImgSize = function (STEPPERSENT) {
-    var persentValue = uploadResizeControlsValue.value;
+    var persentValue = ResizeControls.value;
     var intValue = parseInt(persentValue, 10);
     intValue -= STEPPERSENT;
     intValue = validePersentValue(intValue);
-    uploadResizeControlsValue.value = intValue + '%';
+    ResizeControls.value = intValue + '%';
     changeScale(intValue);
   };
 
   var increaseImgSize = function (STEPPERSENT) {
-    var persentValue = uploadResizeControlsValue.value;
+    var persentValue = ResizeControls.value;
     var intValue = parseInt(persentValue, 10);
     intValue += STEPPERSENT;
     intValue = validePersentValue(intValue);
-    uploadResizeControlsValue.value = intValue + '%';
+    ResizeControls.value = intValue + '%';
     changeScale(intValue);
   };
 
   window.scaleInit.initializeScale(reductionImgSize, increaseImgSize);
 
   var validePersentValue = function (intValue) {
-    if (intValue <= MIN_PERSENT) {
-      intValue = MIN_PERSENT;
-    } else if (intValue > MAX_PERSENT) {
-      intValue = MAX_PERSENT;
+    if (intValue <= MIN_PERCENT) {
+      intValue = MIN_PERCENT;
+    } else if (intValue > MAX_PERCENT) {
+      intValue = MAX_PERCENT;
     }
     return intValue;
   };
@@ -128,8 +130,8 @@
     effectImagePreview.style.transform = 'scale(' + value + ')';
   };
 
-  uploadResizeControlsValue.addEventListener('change', function () {
-    var persentValue = uploadResizeControlsValue.value;
+  ResizeControls.addEventListener('change', function () {
+    var persentValue = ResizeControls.value;
     var index = parseInt(persentValue, 10) / 100;
     effectImagePreview.style.transform = 'scale(' + index + ')';
   });
@@ -180,28 +182,20 @@
     processingValidity(evt, noSharp, isRepeated, isLong, tooMuch);
   }
 
-  var levelContainer = document.querySelector('.upload-effect-level');
-  var imagePreview = uploadForm.querySelector('.upload-form-preview');
-  var scaleImage = uploadForm.querySelector('.effect-image-preview');
-  var ResizeControls = uploadForm.querySelector('.upload-resize-controls-value');
-  var input = uploadForm.querySelectorAll('input[type=radio]');
-
   var resetForm = function () {
-    window.classes = scaleImage.className.split(' ');
-    if (window.classes.length === 2) {
-      scaleImage.classList.remove(window.classes[1]);
-      window.classes.splice(1, 1);
-    }
+    window.classes = effectImagePreview.className.split(' ');
+    effectImagePreview.classList.remove(window.classes[1]);
+    effectImagePreview.classList.add('effect-none');
 
     for (var i = 0; i < input.length; i++) {
       if (input[i].checked) {
         input[i].removeAttribute('checked');
       }
     }
-    input[0].setAttribute('checked', '');
+    input[0].setAttribute('checked', 'true');
 
-    imagePreview.style = 'transform: scale(1)';
-    scaleImage.setAttribute('style', 'filter: none');
+    imagePreview.style.transform = 'scale(1)';
+    effectImagePreview.style.filter = 'none';
     ResizeControls.setAttribute('value', '100%');
     levelContainer.classList.add('hidden');
     uploadForm.reset();
