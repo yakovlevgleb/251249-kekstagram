@@ -16,30 +16,18 @@ window.picture = (function () {
     return pictureElement;
   };
 
-  var galleryOverlay = document.querySelector(window.preview.selectors.galleryOverlay);
-
-  var renderPicture = function (picture) {
-    var fragment = document.createDocumentFragment();
-    for (var i = 0; i < picture.length; i++) {
-      fragment.appendChild(createPictureNode(picture[i], i));
-    }
-    document.querySelector('.pictures').appendChild(fragment);
-    document.querySelector('.filters').classList.remove('hidden');
-
-    document.querySelector('.pictures').addEventListener('click', function (evt) {
-      evt.preventDefault();
-      var target = evt.target;
-      if (target.tagName === 'IMG') {
-        var ind = target.getAttribute('data-index');
-        window.preview.fillGallery(galleryOverlay, ind, picture);
-        window.preview.showGallery(galleryOverlay);
-      }
-    });
-  };
-
-  window.backend.load(renderPicture);
+  window.backend.load(window.data.successHandler);
 
   return {
+    renderPicture: function (picture) {
+      var fragment = document.createDocumentFragment();
+      for (var i = 0; i < picture.length; i++) {
+        fragment.appendChild(createPictureNode(picture[i], i));
+      }
+      document.querySelector('.pictures').appendChild(fragment);
+      document.querySelector('.filters').classList.remove('hidden');
+    },
+
     errorHandler: function (errorMessage) {
       var node = document.createElement('div').className('error');
       node.style.left = 0;
