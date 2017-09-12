@@ -21,6 +21,7 @@ window.picture = (function () {
   return {
     renderPicture: function (picture) {
       var fragment = document.createDocumentFragment();
+      document.querySelector('.pictures').innerHTML = ''
       for (var i = 0; i < picture.length; i++) {
         fragment.appendChild(createPictureNode(picture[i], i));
       }

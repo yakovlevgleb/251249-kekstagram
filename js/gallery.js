@@ -17,6 +17,66 @@ window.gallery = (function () {
     galleryElement.classList.add('hidden');
   });
 
+
+  var filters = {
+    'filter-recommend': {
+      setFilter: function (array) {
+        array.sort(function (a, b) {
+          if (a.likes < b.likes) {
+            return 1;
+          }
+          if (a.likes > b.likes) {
+            return -1;
+          }
+          return 0;
+        });
+      }
+    },
+    'filter-popular': {
+      setFilter: function (array) {
+        array.sort(function (a, b) {
+          if (a.likes < b.likes) {
+            return 1;
+          }
+          if (a.likes > b.likes) {
+            return -1;
+          }
+          return 0;
+        });
+      }
+    },
+    'filter-discussed': {
+      setFilter: function (array) {
+        array.sort(function (a, b) {
+          if (a.likes < b.likes) {
+            return 1;
+          }
+          if (a.likes > b.likes) {
+            return -1;
+          }
+          return 0;
+        });
+      }
+    },
+    'filter-random': {
+      setFilter: function (array) {
+        var index = array.length - 1;
+        var randomElem;
+        var value;
+        while (index > 1) {
+          randomElem = Math.floor(Math.random() * (index + 1));
+          value = array[index];
+          array[index] = array[randomElem];
+          array[randomElem] = value;
+          index--;
+        }
+        return array;
+      }
+    }
+  };
+
+  var filtersItem = document.querySelector('.filters');
+
   return {
     openPicPopup: function (array) {
       document.querySelector('.pictures').addEventListener('click', function (evt) {
@@ -30,20 +90,32 @@ window.gallery = (function () {
         document.querySelector(window.preview.selectors.upload).classList.add('hidden');
       });
     },
-    recomendedSort: function (array) {
+    changeSorting: function (pictures) {
+      filtersItem.addEventListener('click', function (evt) {
+        if (evt.target.getAttribute('class') === 'filters-item') {
+          var forElement = evt.target.getAttribute('for');
+          var value = filters[forElement].setFilter(pictures);
+          window.picture.renderPicture(value);
+        }
+      });
     },
-    popularLikesSort: function (array, value) {
+    recomendedSort: function (array) {
       array.sort(function (a, b) {
-        if (a[value] < b[value]) {
+        return a - b;
+      });
+    },
+    popularLikesSort: function (array) {
+      array.sort(function (a, b) {
+        if (a.likes < b.likes) {
           return 1;
         }
-        if (a[value] > b[value]) {
+        if (a.likes > b.likes) {
           return -1;
         }
         return 0;
       });
     },
-    popularCommentsSort: function (array, value) {
+    popularArrayCommentsSort: function (array) {
       array.sort(function (a, b) {
         if (a.comments.length < b.comments.length) {
           return 1;
@@ -53,6 +125,19 @@ window.gallery = (function () {
         }
         return 0;
       });
+    },
+    randomSort: function (array) {
+      var index = array.length - 1;
+      var randomElem;
+      var value;
+      while (index > 1) {
+        randomElem = Math.floor(Math.random() * (index + 1));
+        value = array[index];
+        array[index] = array[randomElem];
+        array[randomElem] = value;
+        index--;
+      }
+      return array;
     }
   };
 })();
