@@ -1,7 +1,7 @@
 'use strict';
 window.backend = (function () {
   var SERVER_URL = 'https://1510.dump.academy/kekstagram';
-  var XHR_TIMEOUT = 6000;
+  var XHR_TIMEOUT = 10000;//не выдает ошибку
   var setup = function (onSuccess, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
