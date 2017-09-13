@@ -88,6 +88,7 @@ window.gallery = (function () {
           var forElement = evt.target.getAttribute('for');
           if (forElement === 'filter-recommend') {
             window.picture.renderPicture(pictures);
+            window.gallery.openPicPopup(pictures);
           } else {
             var value = filters[forElement].setFilter(pictures);
             window.picture.renderPicture(value);
