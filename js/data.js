@@ -8,7 +8,7 @@ window.data = (function () {
       pictures = data;
       window.picture.renderPicture(pictures);
       window.gallery.changeSorting(pictures);
-      window.gallery.openPicPopup(pictures);
+
     }
   };
 })();
