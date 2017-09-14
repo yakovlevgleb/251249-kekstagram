@@ -211,6 +211,6 @@
     window.backend.save(new FormData(uploadForm), function () {
       uploadOverlay.classList.add('hidden');
       resetForm();
-    }, window.picture.errorHandler);
+    }, window.backend.errorHandler);
   });
 }());

@@ -100,7 +100,6 @@ window.gallery = (function () {
             window.gallery.openPicPopup(value);
           }
         }
-
       });
     }
   };

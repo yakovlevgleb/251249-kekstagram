@@ -16,7 +16,7 @@ window.picture = (function () {
     return pictureElement;
   };
 
-  window.backend.load(window.data.successHandler);
+  window.backend.load(window.data.successHandler, window.backend.errorHandler);
 
   return {
     renderPicture: function (picture) {
@@ -27,21 +27,6 @@ window.picture = (function () {
       }
       document.querySelector('.pictures').appendChild(fragment);
       document.querySelector('.filters').classList.remove('hidden');
-    },
-
-    errorHandler: function (errorMessage) {
-      var node = document.createElement('div').className('error');
-      node.style.left = 0;
-      node.style.right = 0;
-      node.style.zIndex = '100';
-      node.style.fontSize = '25px';
-      node.style.margin = '0 auto';
-      node.style.textAlign = 'center';
-      node.style.position = 'absolute';
-      node.style.backgroundColor = 'red';
-      node.style.color = 'yellow';
-
-      node.textContent = errorMessage;
-      document.body.insertAdjacentElement('afterbegin', node);
-    }};
+    }
+  };
 })();
