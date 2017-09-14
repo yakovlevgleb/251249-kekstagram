@@ -69,6 +69,7 @@ window.gallery = (function () {
 
 
   var filtersItem = document.querySelector('.filters');
+
   return {
     openPicPopup: function (array) {
       document.querySelector('.pictures').addEventListener('click', function (evt) {
@@ -87,11 +88,15 @@ window.gallery = (function () {
         if (evt.target.getAttribute('class') === 'filters-item') {
           var forElement = evt.target.getAttribute('for');
           if (forElement === 'filter-recommend') {
-            window.picture.renderPicture(pictures);
+            window.debounce.debounce(function () {
+              window.picture.renderPicture(pictures);
+            });
             window.gallery.openPicPopup(pictures);
           } else {
             var value = filters[forElement].setFilter(pictures);
-            window.picture.renderPicture(value);
+            window.debounce.debounce(function () {
+              window.picture.renderPicture(value);
+            });
             window.gallery.openPicPopup(value);
           }
         }
