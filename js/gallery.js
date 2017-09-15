@@ -2,7 +2,9 @@
 
 window.gallery = (function () {
   var ESC_KEYCODE = 27;
+  var FILTERS_ITEM = 'filters-item';
   var galleryOverlay = document.querySelector(window.preview.selectors.galleryOverlay);
+  var filtersItem = document.querySelector('.filters');
 
   document.addEventListener('keydown', function (event) {
     if (event.keyCode === ESC_KEYCODE && document.activeElement !== document.querySelector('.upload-form-description')) {
@@ -52,23 +54,13 @@ window.gallery = (function () {
     'filter-random': {
       setFilter: function (array) {
         pictureArrCopy = array.slice();
-        var index = pictureArrCopy.length - 1;
-        var randomElem;
-        var value;
-        while (index > 1) {
-          randomElem = Math.floor(Math.random() * (index + 1));
-          value = pictureArrCopy[index];
-          pictureArrCopy[index] = pictureArrCopy[randomElem];
-          pictureArrCopy[randomElem] = value;
-          index--;
-        }
+        pictureArrCopy.sort(function () {
+          return Math.random() - 0.5;
+        });
         return pictureArrCopy;
       }
     }
   };
-
-
-  var filtersItem = document.querySelector('.filters');
 
   return {
     openPicPopup: function (array) {
@@ -85,7 +77,7 @@ window.gallery = (function () {
     },
     changeSorting: function (pictures) {
       filtersItem.addEventListener('click', function (evt) {
-        if (evt.target.getAttribute('class') === 'filters-item') {
+        if (evt.target.getAttribute('class') === FILTERS_ITEM) {
           var forElement = evt.target.getAttribute('for');
           if (forElement === 'filter-recommend') {
             window.debounce.debounce(function () {

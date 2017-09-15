@@ -3,8 +3,16 @@
 window.picture = (function () {
 
   var pictureTemplate = document.querySelector('#picture-template').content;
+  var picturesBlock = document.querySelector('.pictures');
+
   var getRandomElement = function (array) {
     return array[Math.floor(Math.random() * array.length)];
+  };
+
+  var clearPictures = function () {
+    while (picturesBlock.firstChild) {
+      picturesBlock.removeChild(picturesBlock.firstChild);
+    }
   };
 
   var createPictureNode = function (picture, i) {
@@ -21,11 +29,11 @@ window.picture = (function () {
   return {
     renderPicture: function (picture) {
       var fragment = document.createDocumentFragment();
-      document.querySelector('.pictures').innerHTML = '';
+      clearPictures();
       for (var i = 0; i < picture.length; i++) {
         fragment.appendChild(createPictureNode(picture[i], i));
       }
-      document.querySelector('.pictures').appendChild(fragment);
+      picturesBlock.appendChild(fragment);
       document.querySelector('.filters').classList.remove('hidden');
     }
   };
