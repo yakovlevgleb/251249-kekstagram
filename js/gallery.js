@@ -22,7 +22,7 @@ window.gallery = (function () {
   var pictureArrCopy = [];
   var filters = {
     'filter-popular': {
-      setFilter: function (array) {
+      setup: function (array) {
         pictureArrCopy = array.slice();
         pictureArrCopy.sort(function (a, b) {
           if (a.likes < b.likes) {
@@ -37,7 +37,7 @@ window.gallery = (function () {
       }
     },
     'filter-discussed': {
-      setFilter: function (array) {
+      setup: function (array) {
         pictureArrCopy = array.slice();
         pictureArrCopy.sort(function (a, b) {
           if (a.comments.length < b.comments.length) {
@@ -52,7 +52,7 @@ window.gallery = (function () {
       }
     },
     'filter-random': {
-      setFilter: function (array) {
+      setup: function (array) {
         pictureArrCopy = array.slice();
         pictureArrCopy.sort(function () {
           return Math.random() - 0.5;
@@ -85,7 +85,7 @@ window.gallery = (function () {
             });
             window.gallery.openPicPopup(pictures);
           } else {
-            var value = filters[forElement].setFilter(pictures);
+            var value = filters[forElement].setup(pictures);
             window.debounce.debounce(function () {
               window.picture.renderPicture(value);
             });

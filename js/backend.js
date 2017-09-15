@@ -1,4 +1,5 @@
 'use strict';
+
 window.backend = (function () {
   var SERVER_URL = 'https://1510.dump.academy/kekstagram';
   var XHR_TIMEOUT = 3000;

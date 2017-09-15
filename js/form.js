@@ -7,6 +7,7 @@
   var MAX_HASHTAGS = 5;
   var MIN_SCROLL_VALUE = 0;
   var MAX_SCROLL_VALUE = 455;
+  var EFFECT_NONE = 'effect-none';
 
   var uploadForm = document.querySelector('.upload-form');
   var uploadOverlay = document.querySelector('.upload-overlay');
@@ -22,32 +23,32 @@
 
   var filters = {
     'effect-marvin': {
-      filter: 'invert(20%)',
-      setFilter: function (val) {
+      value: 'invert(20%)',
+      setup: function (val) {
         return 'invert(' + val * 100 + '%)';
       }
     },
     'effect-chrome': {
-      filter: 'grayscale(0.2)',
-      setFilter: function (val) {
+      value: 'grayscale(0.2)',
+      setup: function (val) {
         return 'grayscale(' + val + ')';
       }
     },
     'effect-sepia': {
-      filter: 'sepia(0.2)',
-      setFilter: function (val) {
+      value: 'sepia(0.2)',
+      setup: function (val) {
         return 'sepia(' + val + ')';
       }
     },
     'effect-phobos': {
-      filter: 'blur(0.6px)',
-      setFilter: function (val) {
+      value: 'blur(0.6px)',
+      setup: function (val) {
         return 'blur(' + val * 3 + 'px)';
       }
     },
     'effect-heat': {
-      filter: 'brightness(0.6)',
-      setFilter: function (val) {
+      value: 'brightness(0.6)',
+      setup: function (val) {
         return 'brightness(' + val * 3 + ')';
       }
     },
@@ -73,8 +74,8 @@
     var defaultValue = 91;
     uploadEffectPin.style.left = defaultValue + 'px';
     uploadtEffectVal.style.width = defaultValue + 'px';
-    effectImagePreview.style.filter = filters[elementStyle].filter;
-    if (elementStyle !== 'effect-none') {
+    effectImagePreview.style.filter = filters[elementStyle].value;
+    if (elementStyle !== EFFECT_NONE) {
       document.querySelector('.upload-effect-level').classList.remove('hidden');
     } else {
       document.querySelector('.upload-effect-level').classList.add('hidden');
@@ -90,7 +91,7 @@
   };
 
   var setFilterOnPhoto = function (newPinOffset, max) {
-    effectImagePreview.style.filter = filters[elementStyle].setFilter(newPinOffset / max);
+    effectImagePreview.style.filter = filters[elementStyle].setup(newPinOffset / max);
   };
 
   window.filtersInit.initializeFilters(setFilterOnPhoto, setPhotoFilter, MIN_SCROLL_VALUE, MAX_SCROLL_VALUE);
@@ -125,13 +126,13 @@
   };
 
   var changeScale = function (value) {
-    value = value / 100;
+    value = value / MAX_PERCENT;
     effectImagePreview.style.transform = 'scale(' + value + ')';
   };
 
   ResizeControls.addEventListener('change', function () {
     var persentValue = ResizeControls.value;
-    var index = parseInt(persentValue, 10) / 100;
+    var index = parseInt(persentValue, 10) / MAX_PERCENT;
     effectImagePreview.style.transform = 'scale(' + index + ')';
   });
 
@@ -165,10 +166,10 @@
     var tooMuch = false;
 
     var testArr = [];
-    tooMuch = valueArray.length > 5;
+    tooMuch = valueArray.length > MAX_HASHTAGS;
 
     for (var i = 0; i < valueArray.length; i++) {
-      isLong = valueArray[i].length > 20;
+      isLong = valueArray[i].length > MAX_HASHTAG_LENGHT;
       noSharp = valueArray[i].charAt(0) !== '#';
 
       if (testArr.indexOf(valueArray[i]) === -1) {
