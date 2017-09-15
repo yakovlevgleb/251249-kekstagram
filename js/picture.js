@@ -3,8 +3,16 @@
 window.picture = (function () {
 
   var pictureTemplate = document.querySelector('#picture-template').content;
+  var picturesBlock = document.querySelector('.pictures');
+
   var getRandomElement = function (array) {
     return array[Math.floor(Math.random() * array.length)];
+  };
+
+  var clearPictures = function () {
+    while (picturesBlock.firstChild) {
+      picturesBlock.removeChild(picturesBlock.firstChild);
+    }
   };
 
   var createPictureNode = function (picture, i) {
@@ -16,43 +24,17 @@ window.picture = (function () {
     return pictureElement;
   };
 
-  var galleryOverlay = document.querySelector(window.preview.selectors.galleryOverlay);
-
-  var renderPicture = function (picture) {
-    var fragment = document.createDocumentFragment();
-    for (var i = 0; i < picture.length; i++) {
-      fragment.appendChild(createPictureNode(picture[i], i));
-    }
-    document.querySelector('.pictures').appendChild(fragment);
-    document.querySelector('.filters').classList.remove('hidden');
-
-    document.querySelector('.pictures').addEventListener('click', function (evt) {
-      evt.preventDefault();
-      var target = evt.target;
-      if (target.tagName === 'IMG') {
-        var ind = target.getAttribute('data-index');
-        window.preview.fillGallery(galleryOverlay, ind, picture);
-        window.preview.showGallery(galleryOverlay);
-      }
-    });
-  };
-
-  window.backend.load(renderPicture);
+  window.backend.load(window.data.successHandler, window.backend.errorHandler);
 
   return {
-    errorHandler: function (errorMessage) {
-      var node = document.createElement('div').className('error');
-      node.style.left = 0;
-      node.style.right = 0;
-      node.style.zIndex = '100';
-      node.style.fontSize = '25px';
-      node.style.margin = '0 auto';
-      node.style.textAlign = 'center';
-      node.style.position = 'absolute';
-      node.style.backgroundColor = 'red';
-      node.style.color = 'yellow';
-
-      node.textContent = errorMessage;
-      document.body.insertAdjacentElement('afterbegin', node);
-    }};
+    renderPicture: function (picture) {
+      var fragment = document.createDocumentFragment();
+      clearPictures();
+      for (var i = 0; i < picture.length; i++) {
+        fragment.appendChild(createPictureNode(picture[i], i));
+      }
+      picturesBlock.appendChild(fragment);
+      document.querySelector('.filters').classList.remove('hidden');
+    }
+  };
 })();
