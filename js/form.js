@@ -13,14 +13,15 @@
   var uploadForm = document.querySelector('.upload-form');
   var uploadOverlay = document.querySelector('.upload-overlay');
   var levelContainer = document.querySelector('.upload-effect-level');
-  var imagePreview = uploadForm.querySelector('.upload-form-preview');
+  var imagePreview = document.querySelector('.upload-form-preview');
   var uploadFormHashtags = document.querySelector('.upload-form-hashtags');
   var effectImagePreview = document.querySelector('.effect-image-preview');
   var uploadEffectPin = document.querySelector('.upload-effect-level-pin');
   var uploadtEffectVal = document.querySelector('.upload-effect-level-val');
-  var resizeControls = uploadForm.querySelector('.upload-resize-controls-value');
-  var input = uploadForm.querySelectorAll('input[type=radio]');
+  var resizeControls = document.querySelector('.upload-resize-controls-value');
+  var input = document.querySelectorAll('input[type=radio]');
   var elementStyle;
+  var validationMessage = null;
 
   var filters = {
     'effect-marvin': {
@@ -94,7 +95,7 @@
     effectImagePreview.style.filter = filters[elementStyle].setup(newPinOffset / max);
   };
 
-  window.filters.initializeFilters(setFilterOnPhoto, setPhotoFilter, MIN_SCROLL_VALUE, MAX_SCROLL_VALUE);
+  window.initializeFilters(setFilterOnPhoto, setPhotoFilter, MIN_SCROLL_VALUE, MAX_SCROLL_VALUE);
 
   var reduceImgSize = function (step) {
     var persentValue = resizeControls.value;
@@ -114,7 +115,7 @@
     changeScale(intValue);
   };
 
-  window.scale.initializeScale(reduceImgSize, growImgSize);
+  window.initializeScale(reduceImgSize, growImgSize);
 
   var checkersentValue = function (intValue) {
     if (intValue <= MIN_PERCENT) {
@@ -140,20 +141,19 @@
     onHashtagsInput(evt);
   });
 
-  function checkValidity(evt, noSharp, isRepeated, isLong, tooMuch) {
-    var target = evt.target;
-
+  function checkHashtagValidity(evt, noSharp, isRepeated, isLong, tooMuch) {
     if (isRepeated) {
-      target.setCustomValidity('Хэштэги не должны повторяться');
+      validationMessage = 'Хэштэги не должны повторяться';
     } else if (noSharp) {
-      target.setCustomValidity('Хэштэги должны начинаться с \'#\' разделяя их \' \'');
+      validationMessage = 'Хэштэги должны начинаться с \'#\' разделяя их \' \'';
     } else if (isLong) {
-      target.setCustomValidity('Хэштэг не может состоять из более' + MAX_HASHTAG_LENGHT + ' символов');
+      validationMessage = 'Хэштэг не может состоять из более' + MAX_HASHTAG_LENGHT + ' символов';
     } else if (tooMuch) {
-      target.setCustomValidity('Количество хэштэгов не должно превышать ' + MAX_HASHTAGS);
+      validationMessage = 'Количество хэштэгов не должно превышать ' + MAX_HASHTAGS;
     } else {
-      target.setCustomValidity('');
+      validationMessage = '';
     }
+    uploadFormHashtags.setCustomValidity(validationMessage);
   }
 
   function onHashtagsInput(evt) {
@@ -180,7 +180,7 @@
       }
     }
 
-    checkValidity(evt, noSharp, isRepeated, isLong, tooMuch);
+    checkHashtagValidity(evt, noSharp, isRepeated, isLong, tooMuch);
   }
 
   var resetForm = function () {
@@ -208,6 +208,6 @@
     window.backend.save(new FormData(uploadForm), function () {
       uploadOverlay.classList.add('hidden');
       resetForm();
-    }, window.backend.errorHandler);
+    });
   });
 }());

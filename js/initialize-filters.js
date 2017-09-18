@@ -1,53 +1,51 @@
 'use strict';
 
-window.filters = (function () {
+(function () {
 
-  return {
-    initializeFilters: function (moveSliderCallback, setPhotoFilterCallback, MINSCROLLVALUE, MAXSCROLLVALUE) {
+  var uploadEffectPin = document.querySelector('.upload-effect-level-pin');
+  var uploadtEffectVal = document.querySelector('.upload-effect-level-val');
+  var uploadEffectControl = document.querySelector('.upload-effect-controls');
 
-      var uploadEffectPin = document.querySelector('.upload-effect-level-pin');
-      var uploadtEffectVal = document.querySelector('.upload-effect-level-val');
-      var uploadEffectControl = document.querySelector('.upload-effect-controls');
+  var returnScaleValue = function (value) {
+    return value + 'px';
+  };
 
-      uploadEffectControl.addEventListener('click', function (evt) {
-        setPhotoFilterCallback(evt.target);
-      });
+  window.initializeFilters = function (moveSliderCallback, setPhotoFilterCallback, MINSCROLLVALUE, MAXSCROLLVALUE) {
 
-      var returnScaleValue = function (value) {
-        return value + 'px';
+    uploadEffectControl.addEventListener('click', function (evt) {
+      setPhotoFilterCallback(evt.target);
+    });
+
+    uploadEffectPin.addEventListener('mousedown', function (evt) {
+      evt.preventDefault();
+      var startCoords = evt.clientX;
+      var startPinOffset = uploadEffectPin.offsetLeft;
+      var onMouseMove = function (moveEvt) {
+        moveEvt.preventDefault();
+        var shift = startCoords - moveEvt.clientX;
+
+        var newPinOffset = startPinOffset - shift;
+        if (newPinOffset < MINSCROLLVALUE) {
+          newPinOffset = MINSCROLLVALUE;
+        } else if (newPinOffset > MAXSCROLLVALUE) {
+          newPinOffset = MAXSCROLLVALUE;
+        }
+
+        uploadEffectPin.style.left = returnScaleValue(newPinOffset);
+        uploadtEffectVal.style.width = returnScaleValue(newPinOffset);
+
+        moveSliderCallback(newPinOffset, MAXSCROLLVALUE);
       };
 
-      uploadEffectPin.addEventListener('mousedown', function (evt) {
-        evt.preventDefault();
-        var startCoords = evt.clientX;
-        var startPinOffset = uploadEffectPin.offsetLeft;
-        var onMouseMove = function (moveEvt) {
-          moveEvt.preventDefault();
-          var shift = startCoords - moveEvt.clientX;
+      var onMouseUp = function (upEvt) {
+        upEvt.preventDefault();
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+      };
 
-          var newPinOffset = startPinOffset - shift;
-          if (newPinOffset < MINSCROLLVALUE) {
-            newPinOffset = MINSCROLLVALUE;
-          } else if (newPinOffset > MAXSCROLLVALUE) {
-            newPinOffset = MAXSCROLLVALUE;
-          }
-
-          uploadEffectPin.style.left = returnScaleValue(newPinOffset);
-          uploadtEffectVal.style.width = returnScaleValue(newPinOffset);
-
-          moveSliderCallback(newPinOffset, MAXSCROLLVALUE);
-        };
-
-        var onMouseUp = function (upEvt) {
-          upEvt.preventDefault();
-
-          document.removeEventListener('mousemove', onMouseMove);
-          document.removeEventListener('mouseup', onMouseUp);
-        };
-
-        document.addEventListener('mousemove', onMouseMove);
-        document.addEventListener('mouseup', onMouseUp);
-      });
-    }
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseup', onMouseUp);
+    });
   };
+
 })();

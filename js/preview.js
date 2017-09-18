@@ -1,7 +1,7 @@
 'use strict';
 
-window.preview = (function () {
-  return {
+(function () {
+  window.preview = {
     fillGallery: function (overlay, index, array) {
       overlay.querySelector('.gallery-overlay-image').setAttribute('src', array[index].url);
       overlay.querySelector('.likes-count').textContent = array[index].likes;

@@ -1,6 +1,6 @@
 'use strict';
 
-window.picture = (function () {
+(function () {
 
   var pictureTemplate = document.querySelector('#picture-template').content;
   var picturesBlock = document.querySelector('.pictures');
@@ -20,17 +20,16 @@ window.picture = (function () {
     return pictureElement;
   };
 
-  window.backend.load(window.data.successHandler, window.backend.errorHandler);
+  window.backend.load(window.onSuccess);
 
-  return {
-    renderPicture: function (picture) {
-      var fragment = document.createDocumentFragment();
-      clearPictures();
-      for (var i = 0; i < picture.length; i++) {
-        fragment.appendChild(createPictureNode(picture[i], i));
-      }
-      picturesBlock.appendChild(fragment);
-      document.querySelector('.filters').classList.remove('hidden');
+  window.renderPicture = function (picture) {
+    var fragment = document.createDocumentFragment();
+    clearPictures();
+    for (var i = 0; i < picture.length; i++) {
+      fragment.appendChild(createPictureNode(picture[i], i));
     }
+    picturesBlock.appendChild(fragment);
+    document.querySelector('.filters').classList.remove('hidden');
   };
+
 })();
