@@ -1,10 +1,10 @@
 'use strict';
 
-window.scaleInit = (function () {
+window.scale = (function () {
+  var STEP_PERCENT = 25;
   var uploadEffect = document.querySelector('.upload-effect');
   var decreaseButton = uploadEffect.querySelector('.upload-resize-controls-button-dec');
   var increaseButton = uploadEffect.querySelector('.upload-resize-controls-button-inc');
-  var STEP_PERCENT = 25;
 
   return {
     initializeScale: function (reductionCallback, increaseCallback) {

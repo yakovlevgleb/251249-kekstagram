@@ -1,6 +1,6 @@
 'use strict';
 
-window.filtersInit = (function () {
+window.filters = (function () {
 
   return {
     initializeFilters: function (moveSliderCallback, setPhotoFilterCallback, MINSCROLLVALUE, MAXSCROLLVALUE) {

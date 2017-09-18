@@ -3,7 +3,7 @@
 window.gallery = (function () {
   var ESC_KEYCODE = 27;
   var FILTERS_ITEM = 'filters-item';
-  var galleryOverlay = document.querySelector(window.preview.selectors.galleryOverlay);
+  var galleryOverlay = document.querySelector('.gallery-overlay');
   var filtersItem = document.querySelector('.filters');
 
   document.addEventListener('keydown', function (event) {
@@ -68,11 +68,10 @@ window.gallery = (function () {
         evt.preventDefault();
         var target = evt.target;
         if (target.tagName === 'IMG') {
-          var ind = target.getAttribute('data-index');
-          window.preview.fillGallery(galleryOverlay, ind, array);
+          window.preview.fillGallery(galleryOverlay, target.getAttribute('data-index'), array);
           window.preview.showGallery(galleryOverlay);
         }
-        document.querySelector(window.preview.selectors.upload).classList.add('hidden');
+        document.querySelector('.upload-overlay').classList.add('hidden');
       });
     },
     changeSorting: function (pictures) {

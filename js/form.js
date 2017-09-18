@@ -7,6 +7,7 @@
   var MAX_HASHTAGS = 5;
   var MIN_SCROLL_VALUE = 0;
   var MAX_SCROLL_VALUE = 455;
+  var DEFAULT_EFFECT_VALUE = 91;
   var EFFECT_NONE = 'effect-none';
 
   var uploadForm = document.querySelector('.upload-form');
@@ -17,7 +18,7 @@
   var effectImagePreview = document.querySelector('.effect-image-preview');
   var uploadEffectPin = document.querySelector('.upload-effect-level-pin');
   var uploadtEffectVal = document.querySelector('.upload-effect-level-val');
-  var ResizeControls = uploadForm.querySelector('.upload-resize-controls-value');
+  var resizeControls = uploadForm.querySelector('.upload-resize-controls-value');
   var input = uploadForm.querySelectorAll('input[type=radio]');
   var elementStyle;
 
@@ -71,9 +72,8 @@
     if (target.getAttribute('class') === 'upload-effect-preview') {
       elementStyle = target.parentNode.getAttribute('for').replace('upload-', '');
     }
-    var defaultValue = 91;
-    uploadEffectPin.style.left = defaultValue + 'px';
-    uploadtEffectVal.style.width = defaultValue + 'px';
+    uploadEffectPin.style.left = DEFAULT_EFFECT_VALUE + 'px';
+    uploadtEffectVal.style.width = DEFAULT_EFFECT_VALUE + 'px';
     effectImagePreview.style.filter = filters[elementStyle].value;
     if (elementStyle !== EFFECT_NONE) {
       document.querySelector('.upload-effect-level').classList.remove('hidden');
@@ -94,29 +94,29 @@
     effectImagePreview.style.filter = filters[elementStyle].setup(newPinOffset / max);
   };
 
-  window.filtersInit.initializeFilters(setFilterOnPhoto, setPhotoFilter, MIN_SCROLL_VALUE, MAX_SCROLL_VALUE);
+  window.filters.initializeFilters(setFilterOnPhoto, setPhotoFilter, MIN_SCROLL_VALUE, MAX_SCROLL_VALUE);
 
-  var reductionImgSize = function (STEPPERSENT) {
-    var persentValue = ResizeControls.value;
+  var reduceImgSize = function (step) {
+    var persentValue = resizeControls.value;
     var intValue = parseInt(persentValue, 10);
-    intValue -= STEPPERSENT;
-    intValue = validePersentValue(intValue);
-    ResizeControls.value = intValue + '%';
+    intValue -= step;
+    intValue = checkersentValue(intValue);
+    resizeControls.value = intValue + '%';
     changeScale(intValue);
   };
 
-  var increaseImgSize = function (STEPPERSENT) {
-    var persentValue = ResizeControls.value;
+  var growImgSize = function (step) {
+    var persentValue = resizeControls.value;
     var intValue = parseInt(persentValue, 10);
-    intValue += STEPPERSENT;
-    intValue = validePersentValue(intValue);
-    ResizeControls.value = intValue + '%';
+    intValue += step;
+    intValue = checkersentValue(intValue);
+    resizeControls.value = intValue + '%';
     changeScale(intValue);
   };
 
-  window.scaleInit.initializeScale(reductionImgSize, increaseImgSize);
+  window.scale.initializeScale(reduceImgSize, growImgSize);
 
-  var validePersentValue = function (intValue) {
+  var checkersentValue = function (intValue) {
     if (intValue <= MIN_PERCENT) {
       intValue = MIN_PERCENT;
     } else if (intValue > MAX_PERCENT) {
@@ -130,8 +130,8 @@
     effectImagePreview.style.transform = 'scale(' + value + ')';
   };
 
-  ResizeControls.addEventListener('change', function () {
-    var persentValue = ResizeControls.value;
+  resizeControls.addEventListener('change', function () {
+    var persentValue = resizeControls.value;
     var index = parseInt(persentValue, 10) / MAX_PERCENT;
     effectImagePreview.style.transform = 'scale(' + index + ')';
   });
@@ -140,7 +140,7 @@
     onHashtagsInput(evt);
   });
 
-  function processingValidity(evt, noSharp, isRepeated, isLong, tooMuch) {
+  function checkValidity(evt, noSharp, isRepeated, isLong, tooMuch) {
     var target = evt.target;
 
     if (isRepeated) {
@@ -176,10 +176,11 @@
         testArr.push(valueArray[i]);
       } else {
         isRepeated = true;
+        return;
       }
     }
 
-    processingValidity(evt, noSharp, isRepeated, isLong, tooMuch);
+    checkValidity(evt, noSharp, isRepeated, isLong, tooMuch);
   }
 
   var resetForm = function () {
@@ -193,16 +194,11 @@
       document.querySelector('.upload-effect-level').classList.add('effect-none');
     }
 
-    for (var i = 0; i < input.length; i++) {
-      if (input[i].checked) {
-        input[i].removeAttribute('checked');
-      }
-    }
     input[0].setAttribute('checked', 'true');
 
     imagePreview.style.transform = 'scale(1)';
     effectImagePreview.style.filter = 'none';
-    ResizeControls.setAttribute('value', '100%');
+    resizeControls.setAttribute('value', '100%');
     levelContainer.classList.add('hidden');
     uploadForm.reset();
   };

@@ -5,10 +5,6 @@ window.picture = (function () {
   var pictureTemplate = document.querySelector('#picture-template').content;
   var picturesBlock = document.querySelector('.pictures');
 
-  var getRandomElement = function (array) {
-    return array[Math.floor(Math.random() * array.length)];
-  };
-
   var clearPictures = function () {
     while (picturesBlock.firstChild) {
       picturesBlock.removeChild(picturesBlock.firstChild);
@@ -19,7 +15,7 @@ window.picture = (function () {
     var pictureElement = pictureTemplate.cloneNode(true);
     pictureElement.querySelector('img').setAttribute('src', picture.url);
     pictureElement.querySelector('span.picture-likes').textContent = picture.likes;
-    pictureElement.querySelector('span.picture-comments').textContent = getRandomElement(picture.comments);
+    pictureElement.querySelector('span.picture-comments').textContent = picture.comments.length;
     pictureElement.querySelector('img').setAttribute('data-index', i);
     return pictureElement;
   };
