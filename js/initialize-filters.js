@@ -20,16 +20,14 @@
       evt.preventDefault();
       var startCoords = evt.clientX;
       var startPinOffset = uploadEffectPin.offsetLeft;
+
       var onMouseMove = function (moveEvt) {
         moveEvt.preventDefault();
         var shift = startCoords - moveEvt.clientX;
 
         var newPinOffset = startPinOffset - shift;
-        if (newPinOffset < minScrollValue) {
-          newPinOffset = minScrollValue;
-        } else if (newPinOffset > maxScrollValue) {
-          newPinOffset = maxScrollValue;
-        }
+        newPinOffset = newPinOffset < 0 ? 0 : newPinOffset;
+        newPinOffset = newPinOffset > maxScrollValue ? maxScrollValue : newPinOffset;
 
         uploadEffectPin.style.left = returnScaleValue(newPinOffset);
         uploadtEffectVal.style.width = returnScaleValue(newPinOffset);
