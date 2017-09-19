@@ -10,13 +10,7 @@
       setup: function (array) {
         pictures = array.slice();
         pictures.sort(function (a, b) {
-          if (a.likes < b.likes) {
-            return 1;
-          }
-          if (a.likes > b.likes) {
-            return -1;
-          }
-          return 0;
+          return b.likes - a.likes;
         });
         return pictures;
       }
@@ -25,13 +19,7 @@
       setup: function (array) {
         pictures = array.slice();
         pictures.sort(function (a, b) {
-          if (a.comments.length < b.comments.length) {
-            return 1;
-          }
-          if (a.comments.length > b.comments.length) {
-            return -1;
-          }
-          return 0;
+          return b.comments.length - a.comments.length;
         });
         return pictures;
       }

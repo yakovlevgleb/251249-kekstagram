@@ -10,7 +10,7 @@
     return value + 'px';
   };
 
-  window.initializeFilters = function (moveSliderCallback, setPhotoFilterCallback, MINSCROLLVALUE, MAXSCROLLVALUE) {
+  window.initializeFilters = function (moveSliderCallback, setPhotoFilterCallback, minScrollValue, maxScrollValue) {
 
     uploadEffectControl.addEventListener('click', function (evt) {
       setPhotoFilterCallback(evt.target);
@@ -25,16 +25,16 @@
         var shift = startCoords - moveEvt.clientX;
 
         var newPinOffset = startPinOffset - shift;
-        if (newPinOffset < MINSCROLLVALUE) {
-          newPinOffset = MINSCROLLVALUE;
-        } else if (newPinOffset > MAXSCROLLVALUE) {
-          newPinOffset = MAXSCROLLVALUE;
+        if (newPinOffset < minScrollValue) {
+          newPinOffset = minScrollValue;
+        } else if (newPinOffset > maxScrollValue) {
+          newPinOffset = maxScrollValue;
         }
 
         uploadEffectPin.style.left = returnScaleValue(newPinOffset);
         uploadtEffectVal.style.width = returnScaleValue(newPinOffset);
 
-        moveSliderCallback(newPinOffset, MAXSCROLLVALUE);
+        moveSliderCallback(newPinOffset, maxScrollValue);
       };
 
       var onMouseUp = function (upEvt) {

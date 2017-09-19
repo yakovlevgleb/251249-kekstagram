@@ -98,26 +98,26 @@
   window.initializeFilters(setFilterOnPhoto, setPhotoFilter, MIN_SCROLL_VALUE, MAX_SCROLL_VALUE);
 
   var reduceImgSize = function (step) {
-    var persentValue = resizeControls.value;
-    var intValue = parseInt(persentValue, 10);
+    var percentValue = resizeControls.value;
+    var intValue = parseInt(percentValue, 10);
     intValue -= step;
-    intValue = checkersentValue(intValue);
+    intValue = checkPercentValue(intValue);
     resizeControls.value = intValue + '%';
     changeScale(intValue);
   };
 
   var growImgSize = function (step) {
-    var persentValue = resizeControls.value;
-    var intValue = parseInt(persentValue, 10);
+    var percentValue = resizeControls.value;
+    var intValue = parseInt(percentValue, 10);
     intValue += step;
-    intValue = checkersentValue(intValue);
+    intValue = checkPercentValue(intValue);
     resizeControls.value = intValue + '%';
     changeScale(intValue);
   };
 
   window.initializeScale(reduceImgSize, growImgSize);
 
-  var checkersentValue = function (intValue) {
+  var checkPercentValue = function (intValue) {
     if (intValue <= MIN_PERCENT) {
       intValue = MIN_PERCENT;
     } else if (intValue > MAX_PERCENT) {
@@ -132,8 +132,8 @@
   };
 
   resizeControls.addEventListener('change', function () {
-    var persentValue = resizeControls.value;
-    var index = parseInt(persentValue, 10) / MAX_PERCENT;
+    var percentValue = resizeControls.value;
+    var index = parseInt(percentValue, 10) / MAX_PERCENT;
     effectImagePreview.style.transform = 'scale(' + index + ')';
   });
 
@@ -188,11 +188,7 @@
     effectImagePreview.classList.remove(classes[1]);
     effectImagePreview.classList.add('effect-none');
 
-    if (elementStyle !== 'effect-none') {
-      document.querySelector('.upload-effect-level').classList.remove('elementStyle');
-    } else {
-      document.querySelector('.upload-effect-level').classList.add('effect-none');
-    }
+    document.querySelector('.upload-effect-level').classList.toggle('elementStyle', elementStyle !== 'effect-none');
 
     input[0].setAttribute('checked', 'true');
 
