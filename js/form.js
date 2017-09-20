@@ -69,19 +69,25 @@
     document.querySelector('#upload-file').classList.remove('hidden');
   });
 
-  var setPhotoFilter = function (target) {
-    if (target.getAttribute('class') === 'upload-effect-preview') {
-      elementStyle = target.parentNode.getAttribute('for').replace('upload-', '');
+  var getAttributeForOnElement = function (evt) {
+    if (evt.target.getAttribute('class') === 'upload-effect-preview') {
+      elementStyle = evt.target.parentNode.getAttribute('for').replace('upload-', '');
     }
-    uploadEffectPin.style.left = DEFAULT_EFFECT_VALUE + 'px';
-    uploadtEffectVal.style.width = DEFAULT_EFFECT_VALUE + 'px';
-    effectImagePreview.style.filter = filters[elementStyle].value;
-    if (elementStyle !== EFFECT_NONE) {
-      document.querySelector('.upload-effect-level').classList.remove('hidden');
-    } else {
-      document.querySelector('.upload-effect-level').classList.add('hidden');
+  };
+
+  var setPhotoFilter = function (evt, effectLevel) {
+    getAttributeForOnElement(evt);
+    if (evt.target.tagName === 'INPUT') {
+      uploadEffectPin.style.left = DEFAULT_EFFECT_VALUE + 'px';
+      uploadtEffectVal.style.width = DEFAULT_EFFECT_VALUE + 'px';
+      effectImagePreview.style.filter = filters[elementStyle].value;
+      if (elementStyle !== EFFECT_NONE) {
+        effectLevel.classList.remove('hidden');
+      } else {
+        effectLevel.classList.add('hidden');
+      }
+      addFilterClass(elementStyle);
     }
-    addFilterClass(elementStyle);
   };
 
   var addFilterClass = function (element) {

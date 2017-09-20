@@ -5,6 +5,7 @@
   var uploadEffectPin = document.querySelector('.upload-effect-level-pin');
   var uploadtEffectVal = document.querySelector('.upload-effect-level-val');
   var uploadEffectControl = document.querySelector('.upload-effect-controls');
+  var uploadEffectLevel = document.querySelector('.upload-effect-level');
 
   var returnScaleValue = function (value) {
     return value + 'px';
@@ -13,7 +14,7 @@
   window.initializeFilters = function (moveSliderCallback, setPhotoFilterCallback, minScrollValue, maxScrollValue) {
 
     uploadEffectControl.addEventListener('click', function (evt) {
-      setPhotoFilterCallback(evt.target);
+      setPhotoFilterCallback(evt, uploadEffectLevel);
     });
 
     uploadEffectPin.addEventListener('mousedown', function (evt) {
@@ -31,7 +32,6 @@
 
         uploadEffectPin.style.left = returnScaleValue(newPinOffset);
         uploadtEffectVal.style.width = returnScaleValue(newPinOffset);
-
         moveSliderCallback(newPinOffset, maxScrollValue);
       };
 
