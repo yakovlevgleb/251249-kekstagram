@@ -1,10 +1,39 @@
 'use strict';
 
-window.gallery = (function () {
+(function () {
   var ESC_KEYCODE = 27;
-  var FILTERS_ITEM = 'filters-item';
-  var galleryOverlay = document.querySelector(window.preview.selectors.galleryOverlay);
-  var filtersItem = document.querySelector('.filters');
+  var ENTER_KEYCODE = 13;
+  var galleryOverlay = document.querySelector('.gallery-overlay');
+  var pictures = [];
+  var filters = {
+    'filter-popular': {
+      setup: function (array) {
+        pictures = array.slice();
+        pictures.sort(function (a, b) {
+          return b.likes - a.likes;
+        });
+        return pictures;
+      }
+    },
+    'filter-discussed': {
+      setup: function (array) {
+        pictures = array.slice();
+        pictures.sort(function (a, b) {
+          return b.comments.length - a.comments.length;
+        });
+        return pictures;
+      }
+    },
+    'filter-random': {
+      setup: function (array) {
+        pictures = array.slice();
+        pictures.sort(function () {
+          return Math.random() - 0.5;
+        });
+        return pictures;
+      }
+    }
+  };
 
   document.addEventListener('keydown', function (event) {
     if (event.keyCode === ESC_KEYCODE && document.activeElement !== document.querySelector('.upload-form-description')) {
@@ -19,80 +48,35 @@ window.gallery = (function () {
     galleryElement.classList.add('hidden');
   });
 
-  var pictureArrCopy = [];
-  var filters = {
-    'filter-popular': {
-      setFilter: function (array) {
-        pictureArrCopy = array.slice();
-        pictureArrCopy.sort(function (a, b) {
-          if (a.likes < b.likes) {
-            return 1;
-          }
-          if (a.likes > b.likes) {
-            return -1;
-          }
-          return 0;
-        });
-        return pictureArrCopy;
-      }
-    },
-    'filter-discussed': {
-      setFilter: function (array) {
-        pictureArrCopy = array.slice();
-        pictureArrCopy.sort(function (a, b) {
-          if (a.comments.length < b.comments.length) {
-            return 1;
-          }
-          if (a.comments.length > b.comments.length) {
-            return -1;
-          }
-          return 0;
-        });
-        return pictureArrCopy;
-      }
-    },
-    'filter-random': {
-      setFilter: function (array) {
-        pictureArrCopy = array.slice();
-        pictureArrCopy.sort(function () {
-          return Math.random() - 0.5;
-        });
-        return pictureArrCopy;
-      }
-    }
-  };
 
-  return {
-    openPicPopup: function (array) {
-      document.querySelector('.pictures').addEventListener('click', function (evt) {
+  window.openPicPopup = function (array) {
+    document.querySelector('.pictures').addEventListener('click', function (evt) {
+      evt.preventDefault();
+      var target = evt.target;
+      if (target.tagName === 'IMG') {
+        window.preview.fillGallery(galleryOverlay, target.getAttribute('data-index'), array);
+        window.preview.showGallery(galleryOverlay);
+      }
+      document.querySelector('.upload-overlay').classList.add('hidden');
+    }
+  );
+    document.querySelector('.pictures').addEventListener('keydown', function (evt) {
+      if (evt.keyCode === ENTER_KEYCODE) {
         evt.preventDefault();
         var target = evt.target;
         if (target.tagName === 'IMG') {
-          var ind = target.getAttribute('data-index');
-          window.preview.fillGallery(galleryOverlay, ind, array);
+          window.preview.fillGallery(galleryOverlay, target.getAttribute('data-index'), array);
           window.preview.showGallery(galleryOverlay);
         }
-        document.querySelector(window.preview.selectors.upload).classList.add('hidden');
-      });
-    },
-    changeSorting: function (pictures) {
-      filtersItem.addEventListener('click', function (evt) {
-        if (evt.target.getAttribute('class') === FILTERS_ITEM) {
-          var forElement = evt.target.getAttribute('for');
-          if (forElement === 'filter-recommend') {
-            window.debounce.debounce(function () {
-              window.picture.renderPicture(pictures);
-            });
-            window.gallery.openPicPopup(pictures);
-          } else {
-            var value = filters[forElement].setFilter(pictures);
-            window.debounce.debounce(function () {
-              window.picture.renderPicture(value);
-            });
-            window.gallery.openPicPopup(value);
-          }
-        }
-      });
-    }
+        document.querySelector('.upload-overlay').classList.add('hidden');
+      }
+    });
+  };
+
+  window.onSuccess = function (data) {
+    pictures = data;
+    window.renderPicture(pictures);
+    window.changeSorting(pictures, filters);
+    window.openPicPopup(pictures);
   };
 })();

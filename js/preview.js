@@ -1,23 +1,14 @@
 'use strict';
 
-window.preview = (function () {
-
-  return {
-    selectors: {
-      gallery: '.gallery-overlay-image',
-      galleryOverlay: '.gallery-overlay',
-      likes: '.likes-count',
-      comments: '.comments-count',
-      upload: '.upload-overlay'
-    },
-
+(function () {
+  window.preview = {
     fillGallery: function (overlay, index, array) {
-      overlay.querySelector(window.preview.selectors.gallery).setAttribute('src', array[index].url);
-      overlay.querySelector(window.preview.selectors.likes).textContent = array[index].likes;
-      overlay.querySelector(window.preview.selectors.comments).textContent = array[index].comments.length;
+      overlay.querySelector('.gallery-overlay-image').setAttribute('src', array[index].url);
+      overlay.querySelector('.likes-count').textContent = array[index].likes;
+      overlay.querySelector('.comments-count').textContent = array[index].comments.length;
     },
 
-    showGallery: function functionName(overlay) {
+    showGallery: function (overlay) {
       overlay.classList.remove('hidden');
     }
   };
