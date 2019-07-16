@@ -1,5 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/yakovlevgleb/251249-kekstagram.svg)](https://greenkeeper.io/)
+
 * Студент: [Gleb Yakovlev](https://up.htmlacademy.ru/javascript/10/user/251249).
 * Наставник: [Борис Ванюшин](https://htmlacademy.ru/profile/id62080).
 
